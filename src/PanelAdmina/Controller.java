@@ -1,21 +1,30 @@
 package PanelAdmina;
-import Device.* ;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import java_sql.*;
+
 
 public class Controller {
+	
+	public enum Mode {DZIEN,NOC,LATO,
+	    
+	}
+	//do zmiany 
+	public int tempdzien;
+	public int tempnoc;
+	
 	public final int OFF = 0;
 	public final int ON = 1;
 	private Przekaznik relay;
 	private Czujnik sensor;
-	private int tryb;
+	private Mode tryb;
 	private int alarm;
 	
 	Controller(){
 		sensor = new Czujnik();
 		relay = new Przekaznik();
-		tryb = 0;
+		tryb = Mode.LATO;
 		alarm = 0;
 	}
 	public void update(){
@@ -31,14 +40,14 @@ public class Controller {
 				alarm = ON;
 			else{
 				switch(tryb){
-				case 0:
+				case DZIEN:
 			
 					break;
-				case 1:
+				case LATO:
 					break;
 				case 2:
 					break;
-				case 3:
+				case NOC:
 			
 					break;
 				default:
