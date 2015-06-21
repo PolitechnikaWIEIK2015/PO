@@ -1,0 +1,9 @@
+CREATE TABLE `systeminteligentnegobudynku`.`czujniki` ( `id` INT(2) NOT NULL AUTO_INCREMENT , `nazwa` VARCHAR(20) NOT NULL , `typ` INT(2) NOT NULL , `stan_aktualny` INT(3) NOT NULL , `stan_minimalny` INT(3) NOT NULL , `stan_maksymalny` INT(3) NOT NULL , `data` DATE NULL DEFAULT NULL , PRIMARY KEY (`id`) ) ENGINE = InnoDB;
+
+CREATE TABLE `systeminteligentnegobudynku`.`przekazniki` ( `id` INT(2) NOT NULL AUTO_INCREMENT , `nazwa` VARCHAR(20) NOT NULL , `stan_ac` INT(1) NOT NULL , `data_zmiany` INT(7) NOT NULL , `zrudlo_zmiany` INT(2) NOT NULL , PRIMARY KEY (`id`) ) ENGINE = InnoDB;
+
+CREATE TABLE `systeminteligentnegobudynku`.`alarmy` ( `id` INT(3) NOT NULL AUTO_INCREMENT , `data_alarmu` DATE NOT NULL , `godzina_alarmu` TIME NOT NULL , `zrudlo` INT(2) NOT NULL , `powod` INT(2) NULL DEFAULT NULL , PRIMARY KEY (`id`) ) ENGINE = InnoDB;
+
+CREATE TABLE `systeminteligentnegobudynku`.`Zdarzenia` ( `id` INT(4) NOT NULL AUTO_INCREMENT , `zrudlo` INT(2) NOT NULL , `czy_odczytany` BOOLEAN NOT NULL , PRIMARY KEY (`id`) ) ENGINE = InnoDB;
+
+CREATE USER 'java'@'%';GRANT ALL PRIVILEGES ON *.* TO 'java'@'%' WITH GRANT OPTION MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;GRANT ALL PRIVILEGES ON `systeminteligentnegobudynku`.* TO 'java'@'%';
