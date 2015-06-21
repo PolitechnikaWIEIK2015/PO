@@ -1,0 +1,5 @@
+how to install connector-java:
+
+https://www.youtube.com/watch?v=2i4t-SL1VsU
+
+use JavaSE-1.7 or compatible 
