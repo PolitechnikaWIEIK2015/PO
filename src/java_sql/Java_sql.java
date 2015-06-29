@@ -49,6 +49,32 @@ public static void close()
 	
 }
 /*
+ * Tworzy calya baze danych w raz z tabelami,=. Uruchomic w przypadku pierwszego startu
+ * 
+ */
+public static void makeTable()  //nietestowane
+{
+
+		try {
+			
+		//	if(prep.executeQuery("mysql_select_db("+dataBase+")") != NULL)	//??
+			
+			prep.executeQuery("mysql_create_db("+dataBase+")");
+			prep.executeQuery("mysql_select_db("+dataBase+")");
+			prep.executeQuery("CREATE TABLE `"+dataBase+"`.`czujniki` ( `id` INT(2) NOT NULL AUTO_INCREMENT , `nazwa` VARCHAR(20) NOT NULL , `typ` INT(2) NOT NULL , `stan_aktualny` INT(3) NOT NULL , `stan_minimalny` INT(3) NOT NULL , `stan_maksymalny` INT(3) NOT NULL , `data` DATE NULL DEFAULT NULL , PRIMARY KEY (`id`) ) ENGINE = InnoDB;");
+			prep.executeQuery("CREATE TABLE `"+dataBase+"`.`przekazniki` ( `id` INT(2) NOT NULL AUTO_INCREMENT , `nazwa` VARCHAR(20) NOT NULL , `stan_ac` INT(1) NOT NULL , `data_zmiany` INT(7) NOT NULL , `zrudlo_zmiany` INT(2) NOT NULL , PRIMARY KEY (`id`) ) ENGINE = InnoDB;");
+			prep.executeQuery("CREATE TABLE `"+dataBase+"`.`alarmy` ( `id` INT(3) NOT NULL AUTO_INCREMENT , `data_alarmu` DATE NOT NULL , `godzina_alarmu` TIME NOT NULL , `zrudlo` INT(2) NOT NULL , `powod` INT(2) NULL DEFAULT NULL , PRIMARY KEY (`id`) ) ENGINE = InnoDB;");
+			prep.executeQuery("CREATE TABLE `"+dataBase+"`.`Zdarzenia` ( `id` INT(4) NOT NULL AUTO_INCREMENT , `zrudlo` INT(2) NOT NULL , `czy_odczytany` BOOLEAN NOT NULL , PRIMARY KEY (`id`) ) ENGINE = InnoDB;");
+		} catch (SQLException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+}
+
+
+/*
  * @param question dowolne zapytanie do bazy danych, kompatybilne z MySQl
  * @return wynik zapytania
  */
@@ -65,6 +91,8 @@ public static ResultSet makeQuery(String question)
 	
 	return(res);
 }
+
+
 
 /*
  * @param typCzujnika typ czujnika ktory chcemy wprowadzic
