@@ -48,6 +48,10 @@ public static void close()
 		}
 	
 }
+/*
+ * @param question dowolne zapytanie do bazy danych, kompatybilne z MySQl
+ * @return wynik zapytania
+ */
 
 public static ResultSet makeQuery(String question)
 {
@@ -62,6 +66,14 @@ public static ResultSet makeQuery(String question)
 	return(res);
 }
 
+/*
+ * @param typCzujnika typ czujnika ktory chcemy wprowadzic
+ * @param nazwa nazwa czujnika do wprowadzenia
+ * @param stan_minimalny minimalny stan jaki moze osiagnac wprowadzany czujnik
+ * @param stan_maksymalny maksymalna wartosc czujnika
+ * @return false jesli niema b쿮du, tru w przypadku wystapienia
+ * 
+ */
 public static boolean addCzujnik(int typCzujnika,String nazwa, int stan_minimalny, int stan_maksymalny) 
 {
 	boolean alarm = false;
@@ -72,10 +84,22 @@ public static boolean addCzujnik(int typCzujnika,String nazwa, int stan_minimaln
 	} catch (SQLException e) 
 	{
 		// TODO Auto-generated catch block
+		alarm = true;
 		e.printStackTrace();
 	}
 	return( alarm );
 }
+
+/*
+ * @param id numer czujnika do aktualizacji
+ * @param typCzujnika typ czujnika ktory chcemy wprowadzic
+ * @param nazwa nazwa czujnika do wprowadzenia
+ * @param stan_minimalny minimalny stan jaki moze osiagnac wprowadzany czujnik
+ * @param stan_maksymalny maksymalna wartosc czujnika
+ * @param stan_aktualny aktualny stan czujnika
+ * @return false jesli niema b쿮du, tru w przypadku wystapienia
+ * 
+ */
 public static boolean updateCzujnik(int id, int typCzujnika,String nazwa, int stan_minimalny, int stan_maksymalny, int stan_aktualny) 
 {
 	boolean alarm = false;
@@ -87,12 +111,18 @@ public static boolean updateCzujnik(int id, int typCzujnika,String nazwa, int st
 	} catch (SQLException e) 
 	{
 		// TODO Auto-generated catch block
+		alarm = true;
 		e.printStackTrace();
 	}
 	return( alarm );
 }
 
-
+/*
+ * @param id numer czujnika do aktualizacji
+ * @param stan_aktualny aktualny stan czujnika
+ * @return false jesli niema b쿮du, tru w przypadku wystapienia
+ * 
+ */
 public static boolean updateCzujnikStanAktualny(int id, int stan_aktualny) 
 {
 	boolean alarm = false;
@@ -102,12 +132,19 @@ public static boolean updateCzujnikStanAktualny(int id, int stan_aktualny)
 				
 	} catch (SQLException e) 
 	{
+		alarm = true;
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
 	return( alarm );
 }
 
+/*
+ * @param nazwa nazwa czujnika do aktualizacji
+ * @param stan_aktualny aktualny stan czujnika
+ * @return false jesli niema b쿮du, tru w przypadku wystapienia
+ * 
+ */
 public static boolean updateCzujnikStanAktualny(String nazwa, int stan_aktualny) 
 {
 	boolean alarm = false;
@@ -122,7 +159,11 @@ public static boolean updateCzujnikStanAktualny(String nazwa, int stan_aktualny)
 	}
 	return( alarm );
 }
-
+/*
+ * @param id numer czujnika do usuniecia
+ * @return false jesli niema b쿮du, tru w przypadku wystapienia
+ * 
+ */
 public static boolean deleteCzujnik(int id)
 {
 	boolean alarm = false;
@@ -132,12 +173,19 @@ public static boolean deleteCzujnik(int id)
 		alarm = stt.execute("DELETE FROM `"+ dataBase +"`.`czujniki` WHERE `czujniki`.`id` = "+ id +"");
 		
 	} catch (SQLException e) {
+		alarm = true;
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
 	
 	return(alarm);
 }
+
+/*
+ * @param nazwa nazwa czujnika do usuniecia
+ * @return false jesli niema b쿮du, tru w przypadku wystapienia
+ * 
+ */
 public static boolean deleteCzujnik(String nazwa)
 {
 	boolean alarm = false;
@@ -153,6 +201,13 @@ public static boolean deleteCzujnik(String nazwa)
 	
 	return(alarm);
 }
+
+/*
+ * @param id numer czujnika do pobrania
+ * @param czujnik obiekt ktory przybierze wartosci czujnika z bazy
+ * @return false jesli niema b쿮du, tru w przypadku wystapienia
+ * 
+ */
 public static boolean getCzujnik(int id,Czujnik czujnik)
 {
 	boolean alarm = false;
@@ -175,6 +230,10 @@ public static boolean getCzujnik(int id,Czujnik czujnik)
 	
 	return(alarm);	
 }
+/*
+ * @return zwraca wszystkie czujniki z bazy z parametrami
+ * 
+ */
 public static List<Czujnik> showCzujniki() {
     List<Czujnik> czujniki = new LinkedList<Czujnik>();
     try {
@@ -198,7 +257,14 @@ public static List<Czujnik> showCzujniki() {
     return czujniki;
 }
 
-
+/*
+ * @param data data wystapienia alarmu
+ * @param godzina godzina wystapienia alarmu
+ * @param zrudlo zrudlo od ktorego pochdzi alarm
+ * @param powod powod alarmu (examp stan minimalny przekroczony)
+ * @return false jesli niema b쿮du, tru w przypadku wystapienia
+ * 
+ */
 public static boolean setAlarm(int data,int godzina,int zrodlo, int powod) 
 {
 	boolean al = true;
@@ -216,6 +282,11 @@ public static boolean setAlarm(int data,int godzina,int zrodlo, int powod)
 	}
 	return( al );
 }
+/*
+ * @param id numer alarmu do usuniecia
+ * @return false jesli niema b쿮du, tru w przypadku wystapienia
+ * 
+ */
 public static boolean deleteAlarm(int id)
 {
 	boolean alarm = false;
@@ -231,6 +302,12 @@ public static boolean deleteAlarm(int id)
 	
 	return(alarm);
 }
+
+/*
+ * @param zrodlo zrudlo wedlug ktorego maja zostac usuniete alarmy
+ * @return false jesli niema b쿮du, tru w przypadku wystapienia
+ * 
+ */
 public static boolean deleteAlarmy(int zrudlo)
 {
 	boolean alarm = false;
@@ -246,6 +323,13 @@ public static boolean deleteAlarmy(int zrudlo)
 	
 	return(alarm);
 }
+
+/*
+ * @param ilsoc ilsoc alamrow do wyslania z bazy
+ * @param idCzujnika numer czujnika ktoryw wywolal zmiany
+ * @return zwraca cala liste alarmow
+ * 
+ */
 public static List<Alarm> showAlarmy(int ilosc, int idCzujnika) {
     List<Alarm> alarmy = new LinkedList<Alarm>();
     try {
@@ -267,7 +351,15 @@ public static List<Alarm> showAlarmy(int ilosc, int idCzujnika) {
     return alarmy;
 }
 
-
+/*
+ * @param id numer przekaznia do wprowadzenia
+ * @param nazwa nazwa przekaznika do wprowadzenia
+ * @param stan_aktualny aktualny stan czujnika
+ * @param zrodloZmiany co wywolalo zmiane stanu przekaznika
+ * @param dataZmiany data kiedy zostala zmiana wywolana
+ * @return false jesli niema b쿮du, tru w przypadku wystapienia
+ * 
+ */
 public static boolean setPrzekaznik(int id, String nazwa, int stanActual,int zrudloZmiany,int dataZmiany) 
 {
 	boolean al = true;
@@ -285,6 +377,13 @@ public static boolean setPrzekaznik(int id, String nazwa, int stanActual,int zru
 	return( al );
 }
 
+/*
+ * @param nazwa nazwa przekaznia do aktualizacji
+ * @param stan_aktualny aktualny stan czujnika
+ * @param zrodloZmiany co wywolalo zmiane stanu przekaznika
+ * @return false jesli niema b쿮du, tru w przypadku wystapienia
+ * 
+ */
 public static boolean updatePrzekaznikStanAktualny(String nazwa, int stan_aktualny, int zrudloZmiany) 
 {
 	boolean alarm = false;
@@ -299,7 +398,13 @@ public static boolean updatePrzekaznikStanAktualny(String nazwa, int stan_aktual
 	}
 	return( alarm );
 }
-
+/*
+ * @param id id przekaznia do aktualizacji
+ * @param stan_aktualny aktualny stan czujnika
+ * @param zrodloZmiany co wywolalo zmiane stanu przekaznika
+ * @return false jesli niema b쿮du, tru w przypadku wystapienia
+ * 
+ */
 public static boolean updatePrzekaznikStanAktualny(int id, int stan_aktualny, int zrudloZmiany) 
 {
 	boolean alarm = false;
@@ -314,7 +419,11 @@ public static boolean updatePrzekaznikStanAktualny(int id, int stan_aktualny, in
 	}
 	return( alarm );
 }
-
+/*
+ * @param id id przekaznia do usuneicia
+ * @return false jesli niema b쿮du, tru w przypadku wystapienia
+ * 
+ */
 public static boolean deletePrzekaznik(int id)
 {
 	boolean alarm = false;
@@ -330,6 +439,11 @@ public static boolean deletePrzekaznik(int id)
 	
 	return(alarm);
 }
+/*
+ * @param ilosc ilosc przekaznikow do wyslania z bazy
+ * @return zwraca cala liste przekaznikow wraz z wszystkimi parametrami
+ * 
+ */
 public static List<Przekaznik> showPrzekazniki(int ilosc, String nazwa) {
     List<Przekaznik> przekazniki = new LinkedList<Przekaznik>();
     try {
