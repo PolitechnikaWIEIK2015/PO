@@ -76,6 +76,53 @@ public static boolean addCzujnik(int typCzujnika,String nazwa, int stan_minimaln
 	}
 	return( alarm );
 }
+public static boolean updateCzujnik(int id, int typCzujnika,String nazwa, int stan_minimalny, int stan_maksymalny, int stan_aktualny) 
+{
+	boolean alarm = false;
+	try {
+		
+		stt.execute("UPDATE`"+ dataBase +"`.`czujniki` SET id="+id+", nazwa="+nazwa+", typ="+typCzujnika+", stan_aktualny="+stan_aktualny+", stan_minimalny="+stan_minimalny+", stan_maksymalny="+stan_maksymalny+", data=NOW WHERE czujniki.id="+id+"" );
+		
+		
+	} catch (SQLException e) 
+	{
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	return( alarm );
+}
+
+
+public static boolean updateCzujnikStanAktualny(int id, int stan_aktualny) 
+{
+	boolean alarm = false;
+	try {
+		
+		stt.execute("UPDATE`"+ dataBase +"`.`czujniki` SET  stan_aktualny="+stan_aktualny+",data=NOW WHERE czujniki.id="+id+"" );
+				
+	} catch (SQLException e) 
+	{
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	return( alarm );
+}
+
+public static boolean updateCzujnikStanAktualny(String nazwa, int stan_aktualny) 
+{
+	boolean alarm = false;
+	try {
+		
+		stt.execute("UPDATE`"+ dataBase +"`.`czujniki` SET  stan_aktualny="+stan_aktualny+",data=NOW WHERE czujniki.nazwa="+nazwa+"" );
+				
+	} catch (SQLException e) 
+	{
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	return( alarm );
+}
+
 public static boolean deleteCzujnik(int id)
 {
 	boolean alarm = false;
@@ -158,9 +205,7 @@ public static boolean setAlarm(int data,int godzina,int zrodlo, int powod)
 	try {
 		
 		stt.execute("INSERT INTO `"+ dataBase +"`.`alarmy` (`id`, `data_alarmu`, `godzina_alarmu`, `zrudlo`, `powod`) VALUES (NULL, '"+ data +"', '"+ godzina +"', '"+ zrodlo +"', '"+ powod +" )");
-/*		prep = con.prepareStatement("SELECT * FROM people WHERE lname = ?");
-		prep.setString(1,"Bloggs");
-		res = prep.executeQuery();*/
+
 		
 		al = false;
 	} catch (SQLException e) 
@@ -239,6 +284,37 @@ public static boolean setPrzekaznik(int id, String nazwa, int stanActual,int zru
 	}
 	return( al );
 }
+
+public static boolean updatePrzekaznikStanAktualny(String nazwa, int stan_aktualny, int zrudloZmiany) 
+{
+	boolean alarm = false;
+	try {
+		
+		stt.execute("UPDATE`"+ dataBase +"`.`przekazniki` SET  stan_ac="+stan_aktualny+",zrudlo_zmiany="+zrudloZmiany+",data_zmiany=NOW WHERE przekazniki.nazwa="+nazwa+"" );
+				
+	} catch (SQLException e) 
+	{
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	return( alarm );
+}
+
+public static boolean updatePrzekaznikStanAktualny(int id, int stan_aktualny, int zrudloZmiany) 
+{
+	boolean alarm = false;
+	try {
+		
+		stt.execute("UPDATE`"+ dataBase +"`.`przekazniki` SET  stan_ac="+stan_aktualny+",zrudlo_zmiany="+zrudloZmiany+",data_zmiany=NOW WHERE przekazniki.id="+id+"" );
+				
+	} catch (SQLException e) 
+	{
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	return( alarm );
+}
+
 public static boolean deletePrzekaznik(int id)
 {
 	boolean alarm = false;
