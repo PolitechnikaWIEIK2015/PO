@@ -4,7 +4,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-
+/*
+ * Klasa s³uzaca do testowania poprawnosci funkcjonowania poszczegolnych metod
+ * "snadBox"
+ * 
+ * 
+ */
 
 public class Java_test {
 
