@@ -355,6 +355,38 @@ public static List<Czujnik> showCzujniki() {
 }
 
 /*
+ * Metoda moze zostac wykorzystana w celu pobrania listy czujnikow aktualnie zainstalowanych wraz z data modyfikacji
+ * Przy zalozeniu ze zostanwa pobrane od do wiersz
+ * 
+ * @param zakresOD zacznie wybierac wiersze liczac od zakresOD+1
+ * @param zakresDO zakonczy wybieranie wierszy liczac do zakresOD+zakresDO
+ * @return zwraca wszystkie czujniki z bazy z parametrami
+ * 
+ */
+public static List<Czujnik> showCzujniki(int zakresOD, int zakresDO) {
+    List<Czujnik> czujniki = new LinkedList<Czujnik>();
+    try {
+        ResultSet result = prep.executeQuery("SELECT * FROM `czujniki` LIMIT "+zakresOD+","+zakresDO+"");
+        int id,typ,stan_aktualny,stan_minimalny,stan_maksymalny,data;
+        String nazwa;
+        while(result.next()) {
+            id = result.getInt("id");
+            nazwa = result.getString("nazwa");
+            typ = result.getInt("typ");
+            stan_aktualny = result.getInt("stan_aktualny");
+            stan_minimalny = result.getInt("stan_minimalny");
+            stan_maksymalny = result.getInt("stan_maksymalny");
+            data = result.getInt("data");
+            czujniki.add(new Czujnik( id,  typ,  nazwa,  stan_aktualny, stan_minimalny, stan_maksymalny, data));
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return null;
+    }
+    return czujniki;
+}
+
+/*
  * metoda sluzaca do ustawienia alrmow
  * 
  * @param data data wystapienia alarmu
@@ -458,7 +490,7 @@ public static boolean getAlarmyData(int id, String data)
 
 
 /*
- * Metoda zwraca liste alamrow wraz z wszystkimi dostepnymi infoamcjami
+ * Metoda zwraca liste alamrow wraz z wszystkimi dostepnymi infoamcjami liczac od poczatku do wartosci pola ilosc
  * 
  * @param ilsoc ilsoc alamrow do wyslania z bazy
  * @param idCzujnika numer czujnika ktoryw wywolal zmiany
@@ -469,6 +501,36 @@ public static List<Alarm> showAlarmy(int ilosc, int idCzujnika) {
     List<Alarm> alarmy = new LinkedList<Alarm>();
     try {
         ResultSet result = prep.executeQuery("SELECT * FROM `alarmy` WHERE `alarmy`.`zrudlo` = "+ idCzujnika + " LIMIT "+ ilosc +"");
+        int id,data_alarmu,godzina_alarmu,zrudlo,powod;
+    
+        while(result.next()) {
+            id = result.getInt("id");
+            data_alarmu = result.getInt("data_alarmu");
+            godzina_alarmu = result.getInt("godzina_alarmu");
+            zrudlo = result.getInt("zrudlo");
+            powod = result.getInt("powod");
+            alarmy.add(new Alarm(id,data_alarmu,godzina_alarmu,zrudlo,powod));
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return null;
+    }
+    return alarmy;
+}
+
+/*
+ * Metoda zwraca liste alamrow wraz z wszystkimi dostepnymi infoamcjami
+ * liczac od wartosc zakresOD+1 do zakresOD+zakresDO
+ * 
+ * @param ilsoc ilsoc alamrow do wyslania z bazy
+ * @param idCzujnika numer czujnika ktoryw wywolal zmiany
+ * @return zwraca cala liste alarmow
+ * 
+ */
+public static List<Alarm> showAlarmy(int zakresOD, int zakresDO, int idCzujnika) {
+    List<Alarm> alarmy = new LinkedList<Alarm>();
+    try {
+        ResultSet result = prep.executeQuery("SELECT * FROM `alarmy` WHERE `alarmy`.`zrudlo` = "+ idCzujnika + " LIMIT "+ zakresOD +", "+zakresDO+"");
         int id,data_alarmu,godzina_alarmu,zrudlo,powod;
     
         while(result.next()) {
@@ -614,7 +676,7 @@ public static boolean deletePrzekaznik(int id)
 }
 /*
  * Metoda s³uzy do pobierania listy przekaznikow z bazy danych
- * W ograniczonej ilosc
+ * W ograniczonej ilosc, od poczatku do lisco+1
  * 
  * @param ilosc ilosc przekaznikow do wyslania z bazy
  * @return zwraca cala liste przekaznikow wraz z wszystkimi parametrami
@@ -642,6 +704,37 @@ public static List<Przekaznik> showPrzekazniki(int ilosc, String nazwa) {
 }
 
 
+/*
+ * Metoda s³uzy do pobierania listy przekaznikow z bazy danych
+ * W ograniczonej ilosc
+ * poczawsszy od wartosci zakresOD+1 do zakresOD+zakresDO
+ * 
+ * @parm zakresOD poczatkowa wartosc od ktorej ma zaczac liczycwiersze do wypisania
+ * @parm zakresDO ilsc wierszy poczawszy od wiersza wpisanego jakowa wartosc do wypisania
+ * @param ilosc ilosc przekaznikow do wyslania z bazy
+ * @return zwraca cala liste przekaznikow wraz z wszystkimi parametrami
+ * 
+ */
+public static List<Przekaznik> showPrzekazniki(int zakresOD, int zakresDO, String nazwa) {
+    List<Przekaznik> przekazniki = new LinkedList<Przekaznik>();
+    try {
+        ResultSet result = prep.executeQuery("SELECT * FROM `przekazniki` WHERE `przekazniki`.`nazwa` LIKE "+ nazwa + " LIMIT "+ ilosc +"");
+        int refNo,stan_ac,data_zmiany,zrudlo_zmiany;
+        String nazwy;
+        while(result.next()) {
+            refNo = result.getInt("id");
+            nazwy = result.getString("nazwa");
+            stan_ac = result.getInt("stan_ac");
+            data_zmiany = result.getInt("data_zmiany");
+            zrudlo_zmiany = result.getInt("zrudlo_zmiany");
+            przekazniki.add(new Przekaznik(refNo,  nazwy,  stan_ac, data_zmiany, zrudlo_zmiany));
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return null;
+    }
+    return przekazniki;
+}
 
 
 
