@@ -3,6 +3,11 @@ import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
+/*
+ * Przed u¿yciem tego modu³u sprawdz poprawnoœc funkcjonowania bazy danych, oraz parametry po³¹czeniowe?wymagane do nawi¹zania po³¹czenia
+ * 
+ */
+
 public class Java_sql extends Sql{
 	
 	        
@@ -15,7 +20,14 @@ public class Java_sql extends Sql{
 	        protected static PreparedStatement prep;
 	        protected static Connection con;
 	        protected static Statement stt;
-	        
+	  
+	        /*
+	         * 
+	         * Metoda slu¿¹ca do nawi¹zywania po³¹czenia z baz¹.
+	         * Jesli baza istnieje i jest odpowiednio wype³niona tabelami
+	         * Jestt pierwsza metoda ktora nalerzy wywowa³æ
+	         * W przeciwnym wypadku trzeba stworzyæ baze danych wed³ug szablonu zawartego w projekcie.
+	         */
 	        
 public static void conection(){
 	        try
@@ -33,6 +45,11 @@ public static void conection(){
 	            e.printStackTrace();
 	        }
 	    }
+/*
+ *  MEtoda wywolywana gdy baza dandych nie jest potrzeban. Zrywa po³¹czeni.
+ *  Nie jest mo¿liwe wykonanie w tedy zadnego zapytania.
+ * 
+ */
 public static void close()  
 {
 
@@ -95,6 +112,7 @@ public static ResultSet makeQuery(String question)
 
 
 /*
+ * Metoda s³u¿¹ca do stworzenia w bazie danych nowego czujnika
  * @param typCzujnika typ czujnika ktory chcemy wprowadzic
  * @param nazwa nazwa czujnika do wprowadzenia
  * @param stan_minimalny minimalny stan jaki moze osiagnac wprowadzany czujnik
@@ -119,6 +137,9 @@ public static boolean addCzujnik(int typCzujnika,String nazwa, int stan_minimaln
 }
 
 /*
+ * Metoda s³u¿¹ca do aktualizacji w³asciwosci czujnika
+ * Mozna jej uzyc na przyk³ad w razie pomylki przy wprowadzaniu do systemu
+ * 
  * @param id numer czujnika do aktualizacji
  * @param typCzujnika typ czujnika ktory chcemy wprowadzic
  * @param nazwa nazwa czujnika do wprowadzenia
@@ -146,6 +167,8 @@ public static boolean updateCzujnik(int id, int typCzujnika,String nazwa, int st
 }
 
 /*
+ * Metoda s³u¿aca do aktualizacji stanu czujnika
+ * 
  * @param id numer czujnika do aktualizacji
  * @param stan_aktualny aktualny stan czujnika
  * @return false jesli niema b³edu, tru w przypadku wystapienia
@@ -168,6 +191,8 @@ public static boolean updateCzujnikStanAktualny(int id, int stan_aktualny)
 }
 
 /*
+ *  Metoda s³u¿aca do aktualizacji stanu czujnika
+ * 
  * @param nazwa nazwa czujnika do aktualizacji
  * @param stan_aktualny aktualny stan czujnika
  * @return false jesli niema b³edu, tru w przypadku wystapienia
@@ -188,6 +213,8 @@ public static boolean updateCzujnikStanAktualny(String nazwa, int stan_aktualny)
 	return( alarm );
 }
 /*
+ * Metoda usówa czujnik z bazy danych
+ * 
  * @param id numer czujnika do usuniecia
  * @return false jesli niema b³edu, tru w przypadku wystapienia
  * 
@@ -210,6 +237,8 @@ public static boolean deleteCzujnik(int id)
 }
 
 /*
+ * Metoda usówa czujnik z bazy danych
+ * 
  * @param nazwa nazwa czujnika do usuniecia
  * @return false jesli niema b³edu, tru w przypadku wystapienia
  * 
@@ -231,6 +260,8 @@ public static boolean deleteCzujnik(String nazwa)
 }
 
 /*
+ * Metoda zwraca
+ * 
  * @param id numer czujnika do pobrania
  * @param czujnik obiekt ktory przybierze wartosci czujnika z bazy
  * @return false jesli niema b³edu, tru w przypadku wystapienia
@@ -242,11 +273,18 @@ public static boolean getCzujnik(int id,Czujnik czujnik)
 	
 	try {
 		
-		prep = con.prepareStatement("SELECT `id` FROM `czujniki` WHERE `czujniki`.`id` = "+ id +"");
+		prep = con.prepareStatement("SELECT `id`,`nazwa`,`typ`,`stan_aktualny`, `stan_minimalny`, `stan_maksymalny`, `data` FROM `czujniki` WHERE `czujniki`.`id` = "+ id +"");
 		res = prep.executeQuery();
 		if(res.next())
 		{							//TODO: 	WAS ADDED NO TEST
-		czujnik.setId(res.getInt("id")); 		// TODO:	erroor 
+		czujnik.setId(res.getInt("id")); 
+		czujnik.setTyp(res.getInt("typ")); 
+		czujnik.setStan(res.getInt("stan_aktualny")); 
+		czujnik.setStanMin(res.getInt("stan_minimalny")); 
+		czujnik.setStanMax(res.getInt("stan_maksymalny")); 
+
+		
+		
 		}
 		
 		
@@ -258,7 +296,38 @@ public static boolean getCzujnik(int id,Czujnik czujnik)
 	
 	return(alarm);	
 }
+
 /*
+ * @param id id czujnika z ktorego ma zostac pobrana data
+ * @param data po wywoalniu funkcji przybierze wartosc daty czujnika
+ * 
+ */
+
+public static boolean getCzujnikData(int id, String data)
+{
+	boolean alarm = false;
+	
+	try {
+		
+		prep = con.prepareStatement("SELECT DATE(`data`) FROM `czujniki` WHERE `czujniki`.`id` = "+ id +"");
+		res = prep.executeQuery();
+		data = String.valueOf(res);
+
+		
+		
+	} catch (SQLException e) 
+	{
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	return(alarm);	
+}
+
+
+/*
+ * Metoda moze zostac wykorzystana w celu pobrania listy czujnikow aktualnie zainstalowanych wraz z data modyfikacji
+ * 
  * @return zwraca wszystkie czujniki z bazy z parametrami
  * 
  */
@@ -286,6 +355,8 @@ public static List<Czujnik> showCzujniki() {
 }
 
 /*
+ * metoda sluzaca do ustawienia larmow
+ * 
  * @param data data wystapienia alarmu
  * @param godzina godzina wystapienia alarmu
  * @param zrudlo zrudlo od ktorego pochdzi alarm
@@ -311,6 +382,8 @@ public static boolean setAlarm(int data,int godzina,int zrodlo, int powod)
 	return( al );
 }
 /*
+ * Metoda s³uzaca do usuniecia alarmow z bazy danych
+ * 
  * @param id numer alarmu do usuniecia
  * @return false jesli niema b³edu, tru w przypadku wystapienia
  * 
@@ -332,6 +405,8 @@ public static boolean deleteAlarm(int id)
 }
 
 /*
+ * Metoda s³uzaca do usuniecai alarmow z bazy danych
+ * 
  * @param zrodlo zrudlo wedlug ktorego maja zostac usuniete alarmy
  * @return false jesli niema b³edu, tru w przypadku wystapienia
  * 
@@ -353,6 +428,8 @@ public static boolean deleteAlarmy(int zrudlo)
 }
 
 /*
+ * Metoda zwraca liste alamrow wraz z wszystkimi dostepnymi infoamcjami
+ * 
  * @param ilsoc ilsoc alamrow do wyslania z bazy
  * @param idCzujnika numer czujnika ktoryw wywolal zmiany
  * @return zwraca cala liste alarmow
@@ -380,6 +457,8 @@ public static List<Alarm> showAlarmy(int ilosc, int idCzujnika) {
 }
 
 /*
+ * Metoda s³uzaca do tworzenia przekaznikow/elementow wykonawczych
+ * 
  * @param id numer przekaznia do wprowadzenia
  * @param nazwa nazwa przekaznika do wprowadzenia
  * @param stan_aktualny aktualny stan czujnika
@@ -406,6 +485,10 @@ public static boolean setPrzekaznik(int id, String nazwa, int stanActual,int zru
 }
 
 /*
+ * Metoda sluzaca do modyfikowania stanu przekaznikow
+ * wymaga podania zrodla gdyz przyjene zost¹³o w zalozeniach ze mozna na przyklad manualnie wlaczyc swiatlo, co zostanie automatycznie odnotowane w sytem
+ * 
+ * 
  * @param nazwa nazwa przekaznia do aktualizacji
  * @param stan_aktualny aktualny stan czujnika
  * @param zrodloZmiany co wywolalo zmiane stanu przekaznika
