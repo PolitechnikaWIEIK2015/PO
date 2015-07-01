@@ -355,7 +355,7 @@ public static List<Czujnik> showCzujniki() {
 }
 
 /*
- * metoda sluzaca do ustawienia larmow
+ * metoda sluzaca do ustawienia alrmow
  * 
  * @param data data wystapienia alarmu
  * @param godzina godzina wystapienia alarmu
@@ -427,6 +427,36 @@ public static boolean deleteAlarmy(int zrudlo)
 	return(alarm);
 }
 
+
+
+/*
+ * @param id id alarmu z ktorego ma zostac pobrana data
+ * @param data po wywoalniu funkcji przybierze wartosc daty alarmu
+ * 
+ */
+public static boolean getAlarmyData(int id, String data)
+{
+	boolean alarm = false;
+	
+	try {
+		
+		prep = con.prepareStatement("SELECT DATE(`data_alarmu`) FROM `alarmy` WHERE `alarmy`.`id` = "+ id +"");
+		res = prep.executeQuery();
+		data = String.valueOf(res);
+
+		
+		
+	} catch (SQLException e) 
+	{
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	return(alarm);	
+}
+
+
+
 /*
  * Metoda zwraca liste alamrow wraz z wszystkimi dostepnymi infoamcjami
  * 
@@ -467,12 +497,12 @@ public static List<Alarm> showAlarmy(int ilosc, int idCzujnika) {
  * @return false jesli niema b³edu, tru w przypadku wystapienia
  * 
  */
-public static boolean setPrzekaznik(int id, String nazwa, int stanActual,int zrudloZmiany,int dataZmiany) 
+public static boolean setPrzekaznik(int id, String nazwa, int stanActual,int zrudloZmiany) 
 {
 	boolean al = true;
 	try {
 		
-		stt.execute("INSERT INTO `"+ dataBase +"`.`przekazniki` (`id`, `nazwa`, `stan_ac`, `data_zmiany`, `zrudlo_zmiany`) VALUES (NULL, '"+ nazwa +"', '"+ stanActual +"', '"+ zrudloZmiany +"', '"+ dataZmiany +" )");
+		stt.execute("INSERT INTO `"+ dataBase +"`.`przekazniki` (`id`, `nazwa`, `stan_ac`, `zrudlo_zmiany`, `data_zmiany`) VALUES (NULL, '"+ nazwa +"', '"+ stanActual +"', '"+ zrudloZmiany +"', NOW )");
 		
 		al = false;
 	} catch (SQLException e) 
@@ -483,6 +513,33 @@ public static boolean setPrzekaznik(int id, String nazwa, int stanActual,int zru
 	}
 	return( al );
 }
+
+/*
+ * @param id id przekaznika z ktorego ma zostac pobrana data
+ * @param data po wywoalniu funkcji przybierze wartosc daty przekaznika
+ * 
+ */
+public static boolean getPrzekaznikiData(int id, String data)
+{
+	boolean alarm = false;
+	
+	try {
+		
+		prep = con.prepareStatement("SELECT DATE(`data_zmiany`) FROM `przekazniki` WHERE `przekazniki`.`id` = "+ id +"");
+		res = prep.executeQuery();
+		data = String.valueOf(res);
+
+		
+		
+	} catch (SQLException e) 
+	{
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	return(alarm);	
+}
+
 
 /*
  * Metoda sluzaca do modyfikowania stanu przekaznikow
@@ -510,6 +567,9 @@ public static boolean updatePrzekaznikStanAktualny(String nazwa, int stan_aktual
 	return( alarm );
 }
 /*
+ * Metoda sluzy do zmiany aktualnego polozenia przekaznika
+ * Automatycznie jest zmieniana rowniez data
+ * 
  * @param id id przekaznia do aktualizacji
  * @param stan_aktualny aktualny stan czujnika
  * @param zrodloZmiany co wywolalo zmiane stanu przekaznika
@@ -531,6 +591,8 @@ public static boolean updatePrzekaznikStanAktualny(int id, int stan_aktualny, in
 	return( alarm );
 }
 /*
+ * Metoda usowa przekaznik z bazy danych
+ * 
  * @param id id przekaznia do usuneicia
  * @return false jesli niema b³edu, tru w przypadku wystapienia
  * 
@@ -551,6 +613,9 @@ public static boolean deletePrzekaznik(int id)
 	return(alarm);
 }
 /*
+ * Metoda s³uzy do pobierania listy przekaznikow z bazy danych
+ * W ograniczonej ilosc
+ * 
  * @param ilosc ilosc przekaznikow do wyslania z bazy
  * @return zwraca cala liste przekaznikow wraz z wszystkimi parametrami
  * 
