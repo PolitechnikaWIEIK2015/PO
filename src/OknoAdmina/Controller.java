@@ -13,11 +13,14 @@ public class Controller {
 	}
 
 	// do zmiany
-	public int tempdzien=23;
+	public int tempdzien;
 	public int tempnoc=17;
-	private int Id;
 	public final int OFF = 0;
 	public final int ON = 1;
+	
+	private int Id;
+	private int name;
+
 	private Przekaznik relay;
 	private Czujnik sensor;
 //	private Alarm Alert;
@@ -25,13 +28,20 @@ public class Controller {
 	private int alarm;
 
 	Controller(int Id) {
+		Java_sql.conection();
+		
 		sensor = new Czujnik();
-		sensor.setStanMax(45);
-		sensor.setStanMin(5);
+		if(Java_sql.getCzujnik(Id, sensor))
+			System.out.println("czujnik " + Id + "failed");
+		System.out.println("czujnik " + sensor.getNazwa() );
+
 		relay = new Przekaznik();
+		
+		
 		tryb = Mode.DZIEN;
 		alarm = 0;
-		this.Id = Id;
+		//this.Id = Id;
+		Java_sql.close();
 	}
 
 	public void update(boolean stan, int value) {
@@ -98,8 +108,34 @@ public class Controller {
 		}
 
 	}
+	
+	public String getNazwaSensor(){
+		return sensor.getNazwa();
+	}
+	
+	public Boolean getStateSensor(){
+		if(sensor.getState()==0)
+			return false;
+		else
+			return true;
+	}
+	
+	public void updateStateSensor(Boolean stan){
+		if(stan)
+			sensor.setState(1);
+		else
+			sensor.setState(0);
+		
+		Java_sql.conection();
+		Java_sql.updateCzujnikStateAktualny(sensor.getId(), sensor.getState());
+		Java_sql.close();
+		
+		
+	}
 
 	private void makeAlarm() {
+		Java_sql.conection();
+		
 		SimpleDateFormat simpleDateHere = new SimpleDateFormat(
 				"yyyy-MM-dd kk:mm:ss (Z)");
 		System.out.println("!!!ALARM!!! elementu Sterujacego " + Id + " " + simpleDateHere.format(new Date()));
@@ -107,6 +143,9 @@ public class Controller {
 	}
 
 	private void makeZdarzenie() {
+		Java_sql.conection();
+		
+		
 		SimpleDateFormat simpleDateHere = new SimpleDateFormat(
 				"yyyy-MM-dd kk:mm:ss (Z)");
 		System.out.println("Zmiana stanu na elemencie sterującym "+ Id + " Na stan " + relay.getStan() + " " + simpleDateHere.format(new Date()));

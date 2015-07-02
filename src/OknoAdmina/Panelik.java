@@ -19,14 +19,19 @@ import javax.swing.JSlider;
 import javax.swing.JTextField;
 //import javax.swing.JSeparator;
 import javax.swing.JCheckBox;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+
 import java.awt.Color;
+
 import org.eclipse.wb.swing.FocusTraversalOnArray;
+
 import java.awt.Component;
 
 public class Panelik extends JFrame {
@@ -75,13 +80,6 @@ public class Panelik extends JFrame {
 	 * Create the frame.
 	 */
 	public Panelik() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setTitle("Panel Administracyjny");
-		setSize(500, 270);
-		setForeground(Color.DARK_GRAY);
-		setBackground(Color.LIGHT_GRAY);
-		getContentPane().setLayout(null);
-		
 		
 		elementSterujacy = new Controller(1);
 		elementSterujacy1 = new Controller(2);
@@ -89,7 +87,14 @@ public class Panelik extends JFrame {
 		elementSterujacy3 = new Controller(4);
 		elementSterujacy4 = new Controller(5);
 		elementSterujacy5 = new Controller(6);
-	
+		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("Panel Administracyjny");
+		setSize(500, 270);
+		setForeground(Color.DARK_GRAY);
+		setBackground(Color.LIGHT_GRAY);
+		getContentPane().setLayout(null);
+		
 		
 		slider = new JSlider();
 		slider.setValue(20);
@@ -269,99 +274,112 @@ public class Panelik extends JFrame {
 		slider_5.setBounds(12, 188, 200, 27);
 		getContentPane().add(slider_5);
 		
-		chckbxCzujnik_5 = new JCheckBox("Czujnik 6");
+		chckbxCzujnik_5 = new JCheckBox(elementSterujacy5.getNazwaSensor());
 		chckbxCzujnik_5.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
 				if(chckbxCzujnik_5.isSelected()){
 					slider_5.setEnabled(true);
+					elementSterujacy5.updateStateSensor(true);
+					System.out.println("start " + elementSterujacy5.getNazwaSensor() );
 					//textField.setText(Integer.toString(slider.getValue()));
 					}
 				else{
 					slider_5.setEnabled(false);
+					elementSterujacy5.updateStateSensor(false);
 					textField_5.setText("OFF");}
 			}
 		});
-		chckbxCzujnik_5.setSelected(true);
+		chckbxCzujnik_5.setSelected(elementSterujacy5.getStateSensor());
 		chckbxCzujnik_5.setBounds(220, 180, 129, 23);
 		getContentPane().add(chckbxCzujnik_5);
 		
-		chckbxCzujnik_1 = new JCheckBox("Czujnik 5");
+		chckbxCzujnik_1 = new JCheckBox(elementSterujacy4.getNazwaSensor());
 		chckbxCzujnik_1.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
 				if(chckbxCzujnik_1.isSelected()){
+					elementSterujacy4.updateStateSensor(true);
 					slider_4.setEnabled(true);
 					//textField.setText(Integer.toString(slider.getValue()));
 					}
 				else{
+					elementSterujacy4.updateStateSensor(false);
 					slider_4.setEnabled(false);
 					textField_4.setText("OFF");}
 			}
 		});
-		chckbxCzujnik_1.setSelected(true);
+		chckbxCzujnik_1.setSelected(elementSterujacy4.getStateSensor());
 		chckbxCzujnik_1.setBounds(220, 149, 129, 23);
 		getContentPane().add(chckbxCzujnik_1);
 		
-		chckbxCzujnik_4 = new JCheckBox("Czujnik 4");
+		chckbxCzujnik_4 = new JCheckBox(elementSterujacy3.getNazwaSensor());
 		chckbxCzujnik_4.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
 				if(chckbxCzujnik_4.isSelected()){
+					elementSterujacy3.updateStateSensor(true);
 					slider_3.setEnabled(true);
 					//textField.setText(Integer.toString(slider.getValue()));
 					}
 				else{
+					elementSterujacy3.updateStateSensor(false);
 					slider_3.setEnabled(false);
 					textField_3.setText("OFF");}
 			}
 		});
-		chckbxCzujnik_4.setSelected(true);
+		chckbxCzujnik_4.setSelected(elementSterujacy3.getStateSensor());
 		chckbxCzujnik_4.setBounds(220, 116, 129, 23);
 		getContentPane().add(chckbxCzujnik_4);
 		
-		chckbxCzujnik_3 = new JCheckBox("Czujnik 3");
+		chckbxCzujnik_3 = new JCheckBox(elementSterujacy2.getNazwaSensor());
 		chckbxCzujnik_3.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
 				if(chckbxCzujnik_3.isSelected()){
+					elementSterujacy2.updateStateSensor(true);
 					slider_2.setEnabled(true);
 					//textField.setText(Integer.toString(slider.getValue()));
 					}
 				else{
+					elementSterujacy2.updateStateSensor(false);
 					slider_2.setEnabled(false);
 					textField_2.setText("OFF");}
 			}
 		});
-		chckbxCzujnik_3.setSelected(true);
+		chckbxCzujnik_3.setSelected(elementSterujacy2.getStateSensor());
 		chckbxCzujnik_3.setBounds(220, 82, 129, 23);
 		getContentPane().add(chckbxCzujnik_3);
 		
-		chckbxCzujnik_2 = new JCheckBox("Czujnik 2");
+		chckbxCzujnik_2 = new JCheckBox(elementSterujacy1.getNazwaSensor());
 		chckbxCzujnik_2.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
 				if(chckbxCzujnik_2.isSelected()){
+					elementSterujacy1.updateStateSensor(true);
 					slider_1.setEnabled(true);
 					//textField.setText(Integer.toString(slider.getValue()));
 					}
 				else{
+					elementSterujacy1.updateStateSensor(false);
 					slider_1.setEnabled(false);
 					textField_1.setText("OFF");}
 			}
 		});
-		chckbxCzujnik_2.setSelected(true);
+		chckbxCzujnik_2.setSelected(elementSterujacy.getStateSensor());
 		chckbxCzujnik_2.setBounds(220, 43, 129, 23);
 		getContentPane().add(chckbxCzujnik_2);
 		
-		chckbxCzujnik = new JCheckBox("Czujnik 1");
+		chckbxCzujnik = new JCheckBox(elementSterujacy.getNazwaSensor());
 		chckbxCzujnik.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
 				if(chckbxCzujnik.isSelected()){
+					elementSterujacy.updateStateSensor(true);
 					slider.setEnabled(true);
 					//textField.setText(Integer.toString(slider.getValue()));
 					}
 				else{
+					elementSterujacy.updateStateSensor(false);
 					slider.setEnabled(false);
 					textField.setText("OFF");}
 			}
 		});
-		chckbxCzujnik.setSelected(true);
+		chckbxCzujnik.setSelected(elementSterujacy.getStateSensor());
 		chckbxCzujnik.setBounds(220, 12, 129, 23);
 		getContentPane().add(chckbxCzujnik);
 		

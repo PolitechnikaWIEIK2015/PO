@@ -5,10 +5,12 @@ public class Czujnik {
 	private int id_czujnik;
 	private String nazwa_czujnik;
 	private int typ_czujnik;
+	private int zadana;
 	private int stanAc_czujnik;
 	private int stanMin_czujnik;
 	private int stanMax_czujnik;
 	private int data_czujnik;
+	private int stan;
 	
 	public 		void 	setId			(int id) {
         this.id_czujnik = id;
@@ -28,8 +30,14 @@ public class Czujnik {
     public 		void 	setStanMax		(int stanMaksymalny) {
         this.stanMax_czujnik = stanMaksymalny;
     }
+    public 		void 	setzadana		(int zad) {
+        this.setZadana(zad);
+    }
     public 		void 	setData			(int dataDodania) {
         this.data_czujnik = dataDodania;
+    }
+    public 		void 	setState			(int state) {
+        this.stan = state;
     }
 
     public 		int		getId			()
@@ -47,6 +55,10 @@ public class Czujnik {
     public 		int		getStan			()
     {
     	return(this.stanAc_czujnik);
+    }
+    public 		int		getState			()
+    {
+    	return(this.stan);
     }
     public 		int		getStanMin		()
     {
@@ -72,16 +84,24 @@ public class Czujnik {
         this.data_czujnik 		= 0;
     	
     }
-    public Czujnik(int id, int typ, String nazwa, int stanActual,int stanMin,int stanMax,int data) {
+    public Czujnik(int id, int typ, String nazwa, int zad, int stanActual, int stanMin, int stanMax, int data, int stan) {
     	
         this.id_czujnik 		= id;
     	this.typ_czujnik 		= typ;
         this.nazwa_czujnik 		= nazwa;
+        this.setZadana(zad);
         this.stanAc_czujnik 	= stanActual;
         this.stanMin_czujnik 	= stanMin;
         this.stanMax_czujnik 	= stanMax;
         this.data_czujnik 		= data;
+        this.stan				= stan;
     }
+	public int getZadana() {
+		return zadana;
+	}
+	public void setZadana(int zadana) {
+		this.zadana = zadana;
+	}
  
 /*    @Override
     public String toString() {

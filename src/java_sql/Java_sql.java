@@ -191,6 +191,29 @@ public static boolean updateCzujnikStanAktualny(int id, int stan_aktualny)
 }
 
 /*
+ * Metoda s³u¿aca do aktualizacji stanu wl/wyl czujnika
+ * 
+ * @param id numer czujnika do aktualizacji
+ * @param stan_aktualny aktualny stan czujnika
+ * @return false jesli niema b³edu, tru w przypadku wystapienia
+ * 
+ */
+public static boolean updateCzujnikStateAktualny(int id, int stan_aktualny) 
+{
+	boolean alarm = false;
+	try {
+		
+		stt.execute("UPDATE`"+ dataBase +"`.`czujniki` SET  Stan="+stan_aktualny+" WHERE czujniki.id="+id+"" );
+				
+	} catch (SQLException e) 
+	{
+		alarm = true;
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	return( alarm );
+}
+/*
  *  Metoda s³u¿aca do aktualizacji stanu czujnika
  * 
  * @param nazwa nazwa czujnika do aktualizacji
@@ -273,16 +296,17 @@ public static boolean getCzujnik(int id,Czujnik czujnik)
 	
 	try {
 		
-		prep = con.prepareStatement("SELECT `id`,`nazwa`,`typ`,`stan_aktualny`, `stan_minimalny`, `stan_maksymalny`, `data` FROM `czujniki` WHERE `czujniki`.`id` = "+ id +"");
+		prep = con.prepareStatement("SELECT `id`,`nazwa`,`Zadana`,`stan_aktualny`, `stan_minimalny`, `stan_maksymalny`, `data`, `Stan` FROM `czujniki` WHERE `czujniki`.`id` = "+ id +"");
 		res = prep.executeQuery();
 		if(res.next())
 		{							//TODO: 	WAS ADDED NO TEST
 		czujnik.setId(res.getInt("id")); 
-		czujnik.setTyp(res.getInt("typ")); 
+		czujnik.setNazwa(res.getString("nazwa"));
+		czujnik.setZadana(res.getInt("Zadana")); 
 		czujnik.setStan(res.getInt("stan_aktualny")); 
 		czujnik.setStanMin(res.getInt("stan_minimalny")); 
 		czujnik.setStanMax(res.getInt("stan_maksymalny")); 
-
+		czujnik.setState(res.getInt("Stan"));
 		
 		
 		}
@@ -345,7 +369,7 @@ public static List<Czujnik> showCzujniki() {
             stan_minimalny = result.getInt("stan_minimalny");
             stan_maksymalny = result.getInt("stan_maksymalny");
             data = result.getInt("data");
-            czujniki.add(new Czujnik( id,  typ,  nazwa,  stan_aktualny, stan_minimalny, stan_maksymalny, data));
+            //czujniki.add(new Czujnik( id,  typ,  nazwa,  stan_aktualny, stan_minimalny, stan_maksymalny, data));
         }
     } catch (SQLException e) {
         e.printStackTrace();
@@ -377,7 +401,7 @@ public static List<Czujnik> showCzujniki(int zakresOD, int zakresDO) {
             stan_minimalny = result.getInt("stan_minimalny");
             stan_maksymalny = result.getInt("stan_maksymalny");
             data = result.getInt("data");
-            czujniki.add(new Czujnik( id,  typ,  nazwa,  stan_aktualny, stan_minimalny, stan_maksymalny, data));
+      //      czujniki.add(new Czujnik( id,  typ,  nazwa,  stan_aktualny, stan_minimalny, stan_maksymalny, data));
         }
     } catch (SQLException e) {
         e.printStackTrace();
@@ -718,7 +742,7 @@ public static List<Przekaznik> showPrzekazniki(int ilosc, String nazwa) {
 public static List<Przekaznik> showPrzekazniki(int zakresOD, int zakresDO, String nazwa) {
     List<Przekaznik> przekazniki = new LinkedList<Przekaznik>();
     try {
-        ResultSet result = prep.executeQuery("SELECT * FROM `przekazniki` WHERE `przekazniki`.`nazwa` LIKE "+ nazwa + " LIMIT "+ ilosc +"");
+        ResultSet result = prep.executeQuery("SELECT * FROM `przekazniki` WHERE `przekazniki`.`nazwa` LIKE "+ nazwa + " LIMIT "+ zakresOD + zakresDO +"");
         int refNo,stan_ac,data_zmiany,zrudlo_zmiany;
         String nazwy;
         while(result.next()) {
