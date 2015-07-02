@@ -24,18 +24,9 @@ public class OknoGlowne extends javax.swing.JFrame implements ActionListener{
     private javax.swing.JLabel temp_aktualne_etykiety[] = new javax.swing.JLabel[8];
 	
     static float wartosci_temp_aktualne[] = new float[8];
-    private int wybor;
     
     public OknoGlowne() {
     	initComponents();
-    }
-     
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new OknoGlowne().setVisible(true);
-            }
-        });
     }
     
     private void initComponents() {
@@ -53,9 +44,6 @@ public class OknoGlowne extends javax.swing.JFrame implements ActionListener{
         LabelTZadane = new javax.swing.JLabel();
         ScrollPaneLogiZadane = new javax.swing.JScrollPane();
         TabelaLogiAktualne = new javax.swing.JTable();
-        wybor = 0;
-        
-        
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -139,39 +127,17 @@ public class OknoGlowne extends javax.swing.JFrame implements ActionListener{
         );
 
         JPanelLogi.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Logi", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP));
-
-        TabelaLogiTAktualne.setModel(new javax.swing.table.DefaultTableModel(
-        		 new Object [][] {
-        	                {null, null, null},
-        	                {null, null, null},
-        	                {null, null, null},
-        	                {null, null, null},
-        	                {null, null, null},
-        	                {null, null, null},
-        	                {null, null, null},
-        	                {null, null, null},
-        	                {null, null, null},
-        	                {null, null, null},
-        	                {null, null, null},
-        	                {null, null, null},
-        	                {null, null, null},
-        	                {null, null, null},
-        	                {null, null, null},
-        	                {null, null, null},
-        	                {null, null, null},
-        	                {null, null, null},
-        	                {null, null, null},
-        	                {null, null, null},
-        	                {null, null, null},
-        	                {null, null, null},
-        	                {null, null, null},
-        	                {null, null, null},
-        	                {null, null, null}
-        	            },
-        	            new String [] {
-        	                "Data", "Godzina", "Temperatura"
-        		 })
-        {
+        Object wTLTA[][] = new Object[25][3];
+        Object wTLTZ[][] = new Object[25][3];
+        for (int x = 0; x<25; x++)
+        	for (int y = 0; y<3; y++)
+        	{
+        		wTLTA[x][y] = null;
+        		wTLTZ[x][y] = null;
+        	}
+        
+        TabelaLogiTAktualne.setModel(new javax.swing.table.DefaultTableModel(wTLTA, new String [] {"Data", "Godzina", "Temperatura"})
+        				{
         				Class[] types = new Class [] {
         						java.lang.String.class, java.lang.Float.class, java.lang.Float.class
         				};
@@ -181,51 +147,25 @@ public class OknoGlowne extends javax.swing.JFrame implements ActionListener{
         				}
         });
         ScrollPaneLogiAktualne.setViewportView(TabelaLogiTAktualne);
-
         ComboBoxLogi.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Brak", "Salon", "Kuchnia", "Sypialnia 1", "Sypialnia 2", "Sypialnia 3", "Lazienka", "Pomieszczenie Gospodarcze" }));
-
         LabelTAktualne.setText("Temperatury aktualne");
-
         LabelTZadane.setText("Temperatury zadane");
-
-        TabelaLogiAktualne.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "Data", "Godzina", "Temperatura"
-            }
-        ));
-        
+        TabelaLogiAktualne.setModel(new javax.swing.table.DefaultTableModel(wTLTZ, new String [] {"Data", "Godzina", "Temperatura"})
+            
+        		{
+				Class[] types = new Class [] {
+						java.lang.String.class, java.lang.Float.class, java.lang.Float.class
+				};
+				
+				public boolean isCellEditable(int rowIndex, int columnIndex) {
+    			return false;
+				}
+});
+        /*******dodawanie listenerow*******/
         TabelaWartosci.getModel().addTableModelListener(new TableModelListenerTWartosci());
-      //  ComboBoxLogi.addActionListener(arg0);
+        ComboBoxLogi.addActionListener(this);
         
-        
-        
+        /**********ustawianie elementow********/
         ScrollPaneLogiZadane.setViewportView(TabelaLogiAktualne);
 
         javax.swing.GroupLayout JPanelLogiLayout = new javax.swing.GroupLayout(JPanelLogi);
@@ -296,22 +236,35 @@ public class OknoGlowne extends javax.swing.JFrame implements ActionListener{
                     .addComponent(JPanelLogi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         
-        pack();
+        setSize(1200, 705);
+        setResizable(false);
     }
     
+    /*********aktualizacja stanow zrodel ciepla*******/
+    void aktualizuj_zc(){
+    	for (int i = 0; i<8; i++)
+		{
+    		int w = 0; //odczyt: 0 - wyl, 1 - wl
+    		if (w==0)
+    			TabelaWartosci.setValueAt("Wylaczone", i, 3);
+    		else
+    			TabelaWartosci.setValueAt("Wlaczone", i, 3);
+		}
+    }
+    /**********aktualizacja temperatur********/
     void aktualizuj_temp_aktualne(){
 		for (int i = 0; i<8; i++)
 		{
 			TabelaWartosci.setValueAt(wartosci_temp_aktualne[i], i, 2);
 			temp_aktualne_etykiety[i].setText("Temp: "+wartosci_temp_aktualne[i]);
 		}
-	};
-	
+	}
+	/*********Wyswietlanie logow***********/
 	public void actionPerformed(ActionEvent e) {
 		javax.swing.JComboBox cb = (javax.swing.JComboBox)e.getSource();
 		String pomieszczenie = (String)cb.getSelectedItem();
-		wyswietl_logi(pomieszczenie);
-		
+		System.out.println(pomieszczenie);
+		wyswietl_logi(pomieszczenie);		
 	}
 	
 	private void wyswietl_logi(String pomieszczenie)
@@ -338,24 +291,24 @@ public class OknoGlowne extends javax.swing.JFrame implements ActionListener{
 		
 		for (int i = 0; i<25; i++)
 		{
-			//Pobieranie daty, jaki format? String?
-		//	TabelaLogiTAktualne.setValueAt(String, arg1, arg2);
-			
+			//Pobieranie i wyswietlanie.	
 		}
 	}
 }
+
+/*******listener dla tabeli wartosci***********/
 class TableModelListenerTWartosci implements TableModelListener{
-public void tableChanged(TableModelEvent e) {
-	TableModel model = (TableModel)e.getSource();
-	int row = e.getFirstRow();
-    int column = e.getColumn();
-    if(column == 2)
-    {
-    float nowa_wartosc_temp = (float)model.getValueAt(row, column);
-    /*wywolanie funkcji zmiany temperatury zadanej w BD
-     * row: 0-7 - pomieszczenie
-     * nowa_wartosc_temp - nowa wartosc temperatury zadanej (float)
-     */	
-    }
-}
+	public void tableChanged(TableModelEvent e) {
+		TableModel model = (TableModel)e.getSource();
+		int row = e.getFirstRow();
+		int column = e.getColumn();
+		if(column == 2)
+			{
+				float nowa_wartosc_temp = (float)model.getValueAt(row, column);
+					/*wywolanie funkcji zmiany temperatury zadanej w BD
+					 * row: 0-7 - pomieszczenie
+					 * nowa_wartosc_temp - nowa wartosc temperatury zadanej (float)
+					 */	
+			}
+		}
 }
