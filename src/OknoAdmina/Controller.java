@@ -36,6 +36,9 @@ public class Controller {
 		System.out.println("czujnik " + sensor.getNazwa() );
 
 		relay = new Przekaznik();
+		if(Java_sql.getPrzekaznik(Id, relay))
+			System.out.println("przekaünik " + Id + "failed");
+		System.out.println("przekaünik " + relay.getNazwa() );
 		
 		
 		tryb = Mode.DZIEN;
@@ -67,14 +70,14 @@ public class Controller {
 					alarm = OFF; 
 				switch (tryb) {
 				case DZIEN:
-					if (sensor.getStan() < tempdzien) {
+					if (sensor.getStan() < sensor.getZadana()) {
 						if (relay.getStan() != ON) {
-							relay.setStan(ON);
+							updateRelay(ON);
 							makeZdarzenie();
 						}
 					}else{
 						if(relay.getStan() != OFF){
-							relay.setStan(OFF);
+							updateRelay(OFF);
 							makeZdarzenie();
 						}
 					}
@@ -82,20 +85,20 @@ public class Controller {
 
 				case LATO:
 					if(relay.getStan() != OFF){
-						relay.setStan(OFF);
+						updateRelay(OFF);
 						makeZdarzenie();
 					}
 					break;
 
 				case NOC:
-					if (sensor.getStan() < tempnoc) {
+					if (sensor.getStan() < sensor.getZadana()) {
 						if (relay.getStan() != ON) {
-							relay.setStan(ON);
+							updateRelay(ON);
 							makeZdarzenie();
 						}
 					}else{
 						if(relay.getStan() != OFF){
-							relay.setStan(OFF);
+							updateRelay(OFF);
 							makeZdarzenie();
 						}
 					}
@@ -144,6 +147,14 @@ public class Controller {
 	
 	Java_sql.conection();
 	Java_sql.updateCzujnikStanAktualny(sensor.getId(), sensor.getZadana());
+	Java_sql.close();
+}
+	
+	public void updateRelay(int zamierzonystan){
+		relay.setStan(zamierzonystan);
+	
+	Java_sql.conection();
+	Java_sql.updatePrzekaznikStanAktualny(relay.getId(), relay.getStan());
 	Java_sql.close();
 }
 

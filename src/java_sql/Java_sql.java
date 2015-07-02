@@ -179,7 +179,7 @@ public static boolean updateCzujnikStanAktualny(int id, int stan_aktualny)
 	boolean alarm = false;
 	try {
 		
-		stt.execute("UPDATE`"+ dataBase +"`.`czujniki` SET  stan_aktualny="+stan_aktualny+",data=NOW WHERE czujniki.id="+id+"" );
+		stt.execute("UPDATE`"+ dataBase +"`.`czujniki` SET  stan_aktualny="+stan_aktualny+" WHERE czujniki.id="+id+"" );
 				
 	} catch (SQLException e) 
 	{
@@ -332,6 +332,40 @@ public static boolean getCzujnik(int id,Czujnik czujnik)
 		czujnik.setState(res.getInt("Stan"));
 		
 		
+		}
+		
+		
+	} catch (SQLException e) 
+	{
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	return(alarm);	
+}
+
+/*
+ * Metoda zwraca
+ * 
+ * @param id numer czujnika do pobrania
+ * @param czujnik obiekt ktory przybierze wartosci czujnika z bazy
+ * @return false jesli niema b³edu, tru w przypadku wystapienia
+ * 
+ */
+public static boolean getPrzekaznik(int id,Przekaznik relay)
+{
+	boolean alarm = false;
+	
+	try {
+		
+		prep = con.prepareStatement("SELECT `id`,`nazwa`,`stan_ac` FROM `przekazniki` WHERE `przekazniki`.`id` = "+ id +"");
+		res = prep.executeQuery();
+		if(res.next())
+		{							//TODO: 	WAS ADDED NO TEST
+		relay.setId(res.getInt("id")); 
+		relay.setNazwa(res.getString("nazwa"));
+		relay.setStan(res.getInt("stan_ac")); 
+	
 		}
 		
 		
@@ -685,12 +719,12 @@ public static boolean updatePrzekaznikStanAktualny(String nazwa, int stan_aktual
  * @return false jesli niema b³edu, tru w przypadku wystapienia
  * 
  */
-public static boolean updatePrzekaznikStanAktualny(int id, int stan_aktualny, int zrudloZmiany) 
+public static boolean updatePrzekaznikStanAktualny(int id, int stan_aktualny) 
 {
 	boolean alarm = false;
 	try {
 		
-		stt.execute("UPDATE`"+ dataBase +"`.`przekazniki` SET  stan_ac="+stan_aktualny+",zrudlo_zmiany="+zrudloZmiany+",data_zmiany=NOW WHERE przekazniki.id="+id+"" );
+		stt.execute("UPDATE`"+ dataBase +"`.`przekazniki` SET  stan_ac="+stan_aktualny+" WHERE przekazniki.id="+id+"" );
 				
 	} catch (SQLException e) 
 	{
