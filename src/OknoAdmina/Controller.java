@@ -46,7 +46,7 @@ public class Controller {
 
 	public void update(boolean stan, int value) {
 		if(stan){
-			sensor.setStan(value);
+			this.updateSensor(value);
 		}
 		
 //		if (alarm == ON) {
@@ -129,9 +129,23 @@ public class Controller {
 		Java_sql.conection();
 		Java_sql.updateCzujnikStateAktualny(sensor.getId(), sensor.getState());
 		Java_sql.close();
-		
-		
 	}
+	
+	public void updateZadana(int zadana){
+			sensor.setZadana(zadana);
+		
+		Java_sql.conection();
+		Java_sql.updateCzujnikZadana(sensor.getId(), sensor.getZadana());
+		Java_sql.close();
+	}
+	
+	public void updateSensor(int odczyt){
+		sensor.setZadana(odczyt);
+	
+	Java_sql.conection();
+	Java_sql.updateCzujnikStanAktualny(sensor.getId(), sensor.getZadana());
+	Java_sql.close();
+}
 
 	private void makeAlarm() {
 		Java_sql.conection();

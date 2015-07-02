@@ -235,6 +235,29 @@ public static boolean updateCzujnikStanAktualny(String nazwa, int stan_aktualny)
 	}
 	return( alarm );
 }
+
+/*
+ *  Metoda s³u¿aca do aktualizacji stanu czujnika
+ * 
+ * @param nazwa nazwa czujnika do aktualizacji
+ * @param stan_aktualny aktualny stan czujnika
+ * @return false jesli niema b³edu, tru w przypadku wystapienia
+ * 
+ */
+public static boolean updateCzujnikZadana(int id, int zadana) 
+{
+	boolean alarm = false;
+	try {
+		
+		stt.execute("UPDATE`"+ dataBase +"`.`czujniki` SET  Zadana="+zadana+" WHERE czujniki.id="+id+"" );
+				
+	} catch (SQLException e) 
+	{
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	return( alarm );
+}
 /*
  * Metoda usówa czujnik z bazy danych
  * 
