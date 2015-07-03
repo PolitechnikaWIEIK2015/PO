@@ -26,6 +26,20 @@ public Przekaznik relay;
 		Java_sql.close();
 	}
 	
+	public void update(){
+		Java_sql.conection();
+		
+		if(Java_sql.getCzujnik(Id, sensor))
+			System.out.println("czujnik " + Id + "failed");
+		System.out.println("czujnik " + sensor.getNazwa() );
+
+		if(Java_sql.getPrzekaznik(Id, relay))
+			System.out.println("przekaünik " + Id + "failed");
+		System.out.println("przekaünik " + relay.getNazwa() );
+		
+		Java_sql.close();
+	}
+	
 	public void updateZadana(int zadana){
 		sensor.setZadana(zadana);
 	

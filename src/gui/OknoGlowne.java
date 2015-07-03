@@ -36,12 +36,22 @@ public class OknoGlowne extends javax.swing.JFrame implements ActionListener{
     private Helper element6;
     private Helper element7;
     Helper[] tabElem;
-    
+    Timer timer;
+    int delay;
     
     static float wartosci_temp_aktualne[] = new float[8];
     
     public OknoGlowne() {
     	initComponents();
+    	delay = 1900;
+        //Set up a timer that calls this object's action handler.
+        timer = new Timer(delay, this);
+        timer.setInitialDelay(delay); //We pause animation twice per cycle
+                                          //by restarting the timer
+        timer.setCoalesce(true);
+        timer.setDelay(delay);
+        timer.start();
+
     }
     
     private void initComponents() {
@@ -270,10 +280,19 @@ public class OknoGlowne extends javax.swing.JFrame implements ActionListener{
     
     /*********aktualizacja stanow zrodel ciepla*******/
      void aktualizuj_zc(){
+    	 int[] w = new int[8];
+    	 w[0] = element.relay.getStan();
+    	 w[1] = element1.relay.getStan();
+    	 w[2] = element2.relay.getStan();
+    	 w[3] = element3.relay.getStan();
+    	 w[4] = element4.relay.getStan();
+    	 w[5] = element5.relay.getStan();
+    	 w[6] = element6.relay.getStan();
+    	 w[7] = element7.relay.getStan();
     	for (int i = 0; i<8; i++)
 		{
-    		int w = tabElem[i].relay.getStan(); //odczyt: 0 - wyl, 1 - wl
-    		if (w==0)
+//    		System.out.println(Integer.toString(tabElem[3].relay.getStan())); //odczyt: 0 - wyl, 1 - wl
+    		if (w[i]==0)
     			TabelaWartosci.setValueAt("Wylaczone", i, 3);
     		else
     			TabelaWartosci.setValueAt("Wlaczone", i, 3);
@@ -281,18 +300,47 @@ public class OknoGlowne extends javax.swing.JFrame implements ActionListener{
     }
     /**********aktualizacja temperatur********/
     void aktualizuj_temp_aktualne(){
+    	wartosci_temp_aktualne[0] = element.sensor.getStan();
+    	wartosci_temp_aktualne[1] = element1.sensor.getStan();
+    	wartosci_temp_aktualne[2] = element2.sensor.getStan();
+    	wartosci_temp_aktualne[3] = element3.sensor.getStan();
+    	wartosci_temp_aktualne[4] = element4.sensor.getStan();
+    	wartosci_temp_aktualne[5] = element5.sensor.getStan();
+    	wartosci_temp_aktualne[6] = element6.sensor.getStan();
+    	wartosci_temp_aktualne[7] = element7.sensor.getStan();
+    	
 		for (int i = 0; i<8; i++)
 		{
-			TabelaWartosci.setValueAt(wartosci_temp_aktualne[i], i, 2);
+			TabelaWartosci.setValueAt(wartosci_temp_aktualne[i], i, 1);
 			temp_aktualne_etykiety[i].setText("Temp: "+wartosci_temp_aktualne[i]);
 		}
 	}
 	/*********Wyswietlanie logow***********/
 	public void actionPerformed(ActionEvent e) {
-		javax.swing.JComboBox cb = (javax.swing.JComboBox)e.getSource();
-		String pomieszczenie = (String)cb.getSelectedItem();
-		System.out.println(pomieszczenie);
-		wyswietl_logi(pomieszczenie);		
+		if(e.getSource()==timer){
+
+			timer.stop();
+			
+			element.update();
+			element1.update();
+			element2.update();
+			element3.update();
+			element4.update();
+			element5.update();
+			element6.update();
+			element7.update();
+			
+			aktualizuj_temp_aktualne();
+			aktualizuj_zc();
+			System.out.println("timerek!!!!!!!!!!!!!!!!!!!11");
+			timer.restart();
+		}
+		if(e.getSource()==ComboBoxLogi){
+			javax.swing.JComboBox cb = (javax.swing.JComboBox)e.getSource();
+			String pomieszczenie = (String)cb.getSelectedItem();
+			System.out.println(pomieszczenie);
+			wyswietl_logi(pomieszczenie);	
+		}	
 	}
 	
 	private void wyswietl_logi(String pomieszczenie)
