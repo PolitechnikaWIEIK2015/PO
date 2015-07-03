@@ -1,13 +1,18 @@
 package gui;
 
+import javax.swing.Timer;
 import javax.swing.table.TableModel;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+
+import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.TimerTask;
 
 public class OknoGlowne extends javax.swing.JFrame implements ActionListener{
 
+    public final static int TWO_SECONDS = 2000;
     private javax.swing.JComboBox ComboBoxLogi;
     private javax.swing.JPanel JPanelBudynek;
     private javax.swing.JPanel JPanelLogi;
@@ -22,7 +27,17 @@ public class OknoGlowne extends javax.swing.JFrame implements ActionListener{
     private javax.swing.JTable TabelaWartosci;
     private javax.swing.JLabel bg_image;
     private javax.swing.JLabel temp_aktualne_etykiety[] = new javax.swing.JLabel[8];
-	
+    private Helper element;
+    private Helper element1;
+    private Helper element2;
+    private Helper element3;
+    private Helper element4;
+    private Helper element5;
+    private Helper element6;
+    private Helper element7;
+    Helper[] tabElem;
+    
+    
     static float wartosci_temp_aktualne[] = new float[8];
     
     public OknoGlowne() {
@@ -44,13 +59,21 @@ public class OknoGlowne extends javax.swing.JFrame implements ActionListener{
         LabelTZadane = new javax.swing.JLabel();
         ScrollPaneLogiZadane = new javax.swing.JScrollPane();
         TabelaLogiAktualne = new javax.swing.JTable();
+        Helper[] tabElem = {element = new Helper(1),
+        element1 = new Helper(2),
+        element2 = new Helper(3),
+        element3 = new Helper(4),
+        element4 = new Helper(5),
+        element5 = new Helper(6),
+        element6 = new Helper(7),
+        element7 = new Helper(8)};
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         JPanelBudynek.setLayout(null);
         for(int i = 0; i<8; i++)
         {
-        	float w = 0; //potrzebna funkcja, ktora pobierze wartosc
+        	float w = tabElem[i].sensor.getStan(); //potrzebna funkcja, ktora pobierze wartosc
         	String tekst = "Temp: "+(String.valueOf(w));
         	temp_aktualne_etykiety[i] = new javax.swing.JLabel(tekst);
         	JPanelBudynek.add(temp_aktualne_etykiety[i]);
@@ -73,14 +96,14 @@ public class OknoGlowne extends javax.swing.JFrame implements ActionListener{
         
         TabelaWartosci.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"Salon", null, null, "Wylaczone"},
-                {"Kuchnia", null, null, "Wylaczone"},
-                {"Korytarz", null, null, "Wylaczone"},
-                {"Sypialnia 1", null, null, "Wylaczone"},
-                {"Sypialnia 2", null, null, "Wylaczone"},
-                {"Sypialnia 3", null, null, "Wylaczone"},
-                {"£azienka", null, null, "Wylaczone"},
-                {"Pomieszczenie Gospodarcze", null, null, "Wylaczone"}
+                {"Salon", tabElem[0].sensor.getStan(), tabElem[0].sensor.getZadana(), "Wylaczone"},
+                {"Kuchnia", tabElem[1].sensor.getStan(), tabElem[1].sensor.getZadana(), "Wylaczone"},
+                {"Korytarz", tabElem[2].sensor.getStan(), tabElem[2].sensor.getZadana(), "Wylaczone"},
+                {"Sypialnia 1", tabElem[3].sensor.getStan(), tabElem[3].sensor.getZadana(), "Wylaczone"},
+                {"Sypialnia 2", tabElem[4].sensor.getStan(), tabElem[4].sensor.getZadana(), "Wylaczone"},
+                {"Sypialnia 3", tabElem[5].sensor.getStan(), tabElem[5].sensor.getZadana(), "Wylaczone"},
+                {"£azienka", tabElem[6].sensor.getStan(), tabElem[6].sensor.getZadana(), "Wylaczone"},
+                {"Pomieszczenie Gospodarcze", tabElem[7].sensor.getStan(), tabElem[7].sensor.getZadana(), "Wylaczone"}
             },
             new String [] {
                 "Pomieszczenie", "Temperatura aktualna", "Temperatura zadana", "ród³o ogrzewania"
@@ -238,13 +261,18 @@ public class OknoGlowne extends javax.swing.JFrame implements ActionListener{
         
         setSize(1200, 705);
         setResizable(false);
+        
     }
     
+
+    	 
+
+    
     /*********aktualizacja stanow zrodel ciepla*******/
-    void aktualizuj_zc(){
+     void aktualizuj_zc(){
     	for (int i = 0; i<8; i++)
 		{
-    		int w = 0; //odczyt: 0 - wyl, 1 - wl
+    		int w = tabElem[i].relay.getStan(); //odczyt: 0 - wyl, 1 - wl
     		if (w==0)
     			TabelaWartosci.setValueAt("Wylaczone", i, 3);
     		else
@@ -311,4 +339,6 @@ class TableModelListenerTWartosci implements TableModelListener{
 					 */	
 			}
 		}
+
+
 }

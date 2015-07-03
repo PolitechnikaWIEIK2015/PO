@@ -1,7 +1,7 @@
 package java_sql;
 
-import java.util.LinkedList;
-import java.util.List;
+//import java.util.LinkedList;
+//import java.util.List;
 
 
 /*
@@ -10,7 +10,7 @@ import java.util.List;
  * 
  * 
  */
-import java.lang.System;
+//import java.lang.System;
 public class Java_test {
 
 //	public static void main(String[] args) {

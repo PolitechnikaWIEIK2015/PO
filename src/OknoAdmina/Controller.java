@@ -143,13 +143,6 @@ public class Controller {
 		Java_sql.close();
 	}
 	
-	public void updateZadana(int zadana){
-			sensor.setZadana(zadana);
-		
-		Java_sql.conection();
-		Java_sql.updateCzujnikZadana(sensor.getId(), sensor.getZadana());
-		Java_sql.close();
-	}
 	
 	public void updateSensor(int odczyt){
 		sensor.setZadana(odczyt);
