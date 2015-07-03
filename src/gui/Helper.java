@@ -40,6 +40,8 @@ public Przekaznik relay;
 		Java_sql.close();
 	}
 	
+
+	
 	public void updateZadana(int zadana){
 		sensor.setZadana(zadana);
 	

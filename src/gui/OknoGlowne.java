@@ -341,6 +341,7 @@ public class OknoGlowne extends javax.swing.JFrame implements ActionListener{
 			System.out.println(pomieszczenie);
 			wyswietl_logi(pomieszczenie);	
 		}	
+		
 	}
 	
 	private void wyswietl_logi(String pomieszczenie)
@@ -379,12 +380,14 @@ class TableModelListenerTWartosci implements TableModelListener{
 		int row = e.getFirstRow();
 		int column = e.getColumn();
 		if(column == 2)
-			{
+			{System.out.println("ZADADAADADADADADADAD");
 				float nowa_wartosc_temp = (float)model.getValueAt(row, column);
 					/*wywolanie funkcji zmiany temperatury zadanej w BD
 					 * row: 0-7 - pomieszczenie
 					 * nowa_wartosc_temp - nowa wartosc temperatury zadanej (float)
 					 */	
+				Helper updater = new Helper(row+1);
+				updater.updateZadana((int)nowa_wartosc_temp);
 			}
 		}
 
