@@ -97,7 +97,8 @@ public class Panelik extends JFrame {
 		
 		
 		slider = new JSlider();
-		slider.setValue(20);
+		slider.setValue(elementSterujacy.getactualna());
+		slider.setEnabled(elementSterujacy.getStateSensor());
 		slider.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				if(slider.getValueIsAdjusting())
@@ -127,7 +128,8 @@ public class Panelik extends JFrame {
 		getContentPane().add(slider);
 		
 		slider_1 = new JSlider();
-		slider_1.setValue(20);
+		slider_1.setValue(elementSterujacy1.getactualna());
+		slider_1.setEnabled(elementSterujacy1.getStateSensor());
 		slider_1.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				if(slider_1.getValueIsAdjusting())
@@ -157,7 +159,8 @@ public class Panelik extends JFrame {
 		getContentPane().add(slider_1);
 		
 		slider_2 = new JSlider();
-		slider_2.setValue(20);
+		slider_2.setValue(elementSterujacy2.getactualna());
+		slider_2.setEnabled(elementSterujacy2.getStateSensor());
 		slider_2.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				if(slider_2.getValueIsAdjusting())
@@ -187,7 +190,8 @@ public class Panelik extends JFrame {
 		getContentPane().add(slider_2);
 		
 		slider_3 = new JSlider();
-		slider_3.setValue(20);
+		slider_3.setValue(elementSterujacy3.getactualna());
+		slider_3.setEnabled(elementSterujacy3.getStateSensor());
 		slider_3.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				if(slider_3.getValueIsAdjusting())
@@ -217,7 +221,8 @@ public class Panelik extends JFrame {
 		getContentPane().add(slider_3);
 		
 		slider_4 = new JSlider();
-		slider_4.setValue(20);
+		slider_4.setValue(elementSterujacy4.getactualna());
+		slider_4.setEnabled(elementSterujacy4.getStateSensor());
 		slider_4.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				if(slider_4.getValueIsAdjusting())
@@ -246,7 +251,8 @@ public class Panelik extends JFrame {
 		getContentPane().add(slider_4);
 		
 		slider_5 = new JSlider();
-		slider_5.setValue(20);
+		slider_5.setValue(elementSterujacy5.getactualna());
+		slider_5.setEnabled(elementSterujacy5.getStateSensor());
 		slider_5.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				if(slider_5.getValueIsAdjusting())

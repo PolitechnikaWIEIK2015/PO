@@ -477,12 +477,40 @@ public static List<Czujnik> showCzujniki(int zakresOD, int zakresDO) {
  * @return false jesli niema b³edu, tru w przypadku wystapienia
  * 
  */
-public static boolean setAlarm(int data,int godzina,int zrodlo, int powod) 
+public static boolean setAlarm(String element, int powod) 
 {
 	boolean al = true;
 	try {
 		
-		stt.execute("INSERT INTO `"+ dataBase +"`.`alarmy` (`id`, `data_alarmu`, `godzina_alarmu`, `zrudlo`, `powod`) VALUES (NULL, '"+ data +"', '"+ godzina +"', '"+ zrodlo +"', '"+ powod +" )");
+		stt.execute("INSERT INTO `"+ dataBase +"`.`alarmy` (`id`, `date`, `element`, `powod`) VALUES (NULL, NOW(), '"+ element +"', '"+ powod +"' )");
+
+		
+		al = false;
+	} catch (SQLException e) 
+	{
+		al = true;
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	return( al );
+}
+
+/*
+ * metoda sluzaca do ustawienia alrmow
+ * 
+ * @param data data wystapienia alarmu
+ * @param godzina godzina wystapienia alarmu
+ * @param zrudlo zrudlo od ktorego pochdzi alarm
+ * @param powod powod alarmu (examp stan minimalny przekroczony)
+ * @return false jesli niema b³edu, tru w przypadku wystapienia
+ * 
+ */
+public static boolean setZdarzenie(String element, int powod, int stan) 
+{
+	boolean al = true;
+	try {
+		
+		stt.execute("INSERT INTO `"+ dataBase +"`.`zdarzenia` (`id`, `date`, `element`, `powod`, `stan`) VALUES (NULL, NOW(), '"+ element +"', '"+ powod +"', '"+ stan +"' )");
 
 		
 		al = false;
