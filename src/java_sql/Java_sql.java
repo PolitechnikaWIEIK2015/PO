@@ -606,26 +606,26 @@ public static boolean getAlarmyData(int id, String data)
  * @return zwraca cala liste alarmow
  * 
  */
-public static List<Alarm> showAlarmy(int ilosc, int idCzujnika) {
-    List<Alarm> alarmy = new LinkedList<Alarm>();
-    try {
-        ResultSet result = prep.executeQuery("SELECT * FROM `alarmy` WHERE `alarmy`.`zrudlo` = "+ idCzujnika + " LIMIT "+ ilosc +"");
-        int id,data_alarmu,godzina_alarmu,zrudlo,powod;
-    
-        while(result.next()) {
-            id = result.getInt("id");
-            data_alarmu = result.getInt("data_alarmu");
-            godzina_alarmu = result.getInt("godzina_alarmu");
-            zrudlo = result.getInt("zrudlo");
-            powod = result.getInt("powod");
-            alarmy.add(new Alarm(id,data_alarmu,godzina_alarmu,zrudlo,powod));
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-        return null;
-    }
-    return alarmy;
-}
+//public static List<Alarm> showAlarmy(int ilosc, int idCzujnika) {
+//    List<Alarm> alarmy = new LinkedList<Alarm>();
+//    try {
+//        ResultSet result = prep.executeQuery("SELECT * FROM `alarmy` WHERE `alarmy`.`zrudlo` = "+ idCzujnika + " LIMIT "+ ilosc +"");
+//        int id,data_alarmu,godzina_alarmu,zrudlo,powod;
+//    
+//        while(result.next()) {
+//            id = result.getInt("id");
+//            data_alarmu = result.getInt("data_alarmu");
+//            godzina_alarmu = result.getInt("godzina_alarmu");
+//            zrudlo = result.getInt("zrudlo");
+//            powod = result.getInt("powod");
+//            alarmy.add(new Alarm(id,data_alarmu,godzina_alarmu,zrudlo,powod));
+//        }
+//    } catch (SQLException e) {
+//        e.printStackTrace();
+//        return null;
+//    }
+//    return alarmy;
+//}
 
 /*
  * Metoda zwraca liste alamrow wraz z wszystkimi dostepnymi infoamcjami
@@ -639,16 +639,16 @@ public static List<Alarm> showAlarmy(int ilosc, int idCzujnika) {
 public static List<Alarm> showAlarmy(int zakresOD, int zakresDO, int idCzujnika) {
     List<Alarm> alarmy = new LinkedList<Alarm>();
     try {
-        ResultSet result = prep.executeQuery("SELECT * FROM `alarmy` WHERE `alarmy`.`zrudlo` = "+ idCzujnika + " LIMIT "+ zakresOD +", "+zakresDO+"");
-        int id,data_alarmu,godzina_alarmu,zrudlo,powod;
-    
+       // ResultSet result = prep.executeQuery("SELECT * FROM `alarmy` WHERE `alarmy`.`zrudlo` = "+ idCzujnika + " LIMIT "+ zakresOD +", "+zakresDO+"");
+        ResultSet result = prep.executeQuery("SELECT * FROM `alarmy`  LIMIT "+ zakresOD +", "+zakresDO+"");
+        int id, powod;
+        String data_alarmu, zrudlo;
         while(result.next()) {
             id = result.getInt("id");
-            data_alarmu = result.getInt("data_alarmu");
-            godzina_alarmu = result.getInt("godzina_alarmu");
-            zrudlo = result.getInt("zrudlo");
+            data_alarmu = result.getString("date");
+            zrudlo = result.getString("element");
             powod = result.getInt("powod");
-            alarmy.add(new Alarm(id,data_alarmu,godzina_alarmu,zrudlo,powod));
+            alarmy.add(new Alarm(id,data_alarmu,zrudlo,powod));
         }
     } catch (SQLException e) {
         e.printStackTrace();

@@ -81,7 +81,7 @@ public class Controller {
 					alarm = OFF; 
 				switch (this.tryb) {
 				case DZIEN:
-					if (sensor.getStan() < sensor.getZadana()) {
+					if (sensor.getStan() > sensor.getZadana()) {
 						if (relay.getStan() != ON) {
 							updateRelay(ON);
 							makeZdarzenie(TooCold);

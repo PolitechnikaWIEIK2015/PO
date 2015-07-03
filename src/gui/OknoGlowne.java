@@ -43,7 +43,7 @@ public class OknoGlowne extends javax.swing.JFrame implements ActionListener{
     
     public OknoGlowne() {
     	initComponents();
-    	delay = 1900;
+    	delay = 5900;
         //Set up a timer that calls this object's action handler.
         timer = new Timer(delay, this);
         timer.setInitialDelay(delay); //We pause animation twice per cycle
@@ -332,8 +332,7 @@ public class OknoGlowne extends javax.swing.JFrame implements ActionListener{
 			
 			aktualizuj_temp_aktualne();
 			aktualizuj_zc();
-			System.out.println("timerek!!!!!!!!!!!!!!!!!!!11");
-			timer.restart();
+			//imer.restart();
 		}
 		if(e.getSource()==ComboBoxLogi){
 			javax.swing.JComboBox cb = (javax.swing.JComboBox)e.getSource();
@@ -368,7 +367,9 @@ public class OknoGlowne extends javax.swing.JFrame implements ActionListener{
 		
 		for (int i = 0; i<25; i++)
 		{
-			//Pobieranie i wyswietlanie.	
+			//Pobieranie i wyswietlanie.
+			element.printer();
+			
 		}
 	}
 }
@@ -380,13 +381,14 @@ class TableModelListenerTWartosci implements TableModelListener{
 		int row = e.getFirstRow();
 		int column = e.getColumn();
 		if(column == 2)
-			{System.out.println("ZADADAADADADADADADAD");
+			{
 				float nowa_wartosc_temp = (float)model.getValueAt(row, column);
 					/*wywolanie funkcji zmiany temperatury zadanej w BD
 					 * row: 0-7 - pomieszczenie
 					 * nowa_wartosc_temp - nowa wartosc temperatury zadanej (float)
 					 */	
 				Helper updater = new Helper(row+1);
+				
 				updater.updateZadana((int)nowa_wartosc_temp);
 			}
 		}

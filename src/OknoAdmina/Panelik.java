@@ -45,6 +45,8 @@ public class Panelik extends JFrame {
 	private JTextField textField_3;
 	private JTextField textField_4;
 	private JTextField textField_5;
+	private JTextField textField_6;
+	private JTextField textField_7;
 	private JSlider slider;
 	private JSlider slider_1;
 	private JSlider slider_2;
@@ -63,6 +65,12 @@ public class Panelik extends JFrame {
 	private Controller elementSterujacy3;
 	private Controller elementSterujacy4;
 	private Controller elementSterujacy5;
+	private Controller elementSterujacy6;
+	private Controller elementSterujacy7;
+	private JSlider slider_7;
+	private JSlider slider_6;
+	private JCheckBox checkBox;
+	private JCheckBox checkBox_1;
 
 	/**
 	 * Launch the application.
@@ -91,10 +99,12 @@ public class Panelik extends JFrame {
 		elementSterujacy3 = new Controller(4);
 		elementSterujacy4 = new Controller(5);
 		elementSterujacy5 = new Controller(6);
+		elementSterujacy6 = new Controller(7);
+		elementSterujacy7 = new Controller(8);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Panel Administracyjny");
-		setSize(500, 270);
+		setSize(500, 350);
 		setForeground(Color.DARK_GRAY);
 		setBackground(Color.LIGHT_GRAY);
 		getContentPane().setLayout(null);
@@ -434,6 +444,119 @@ public class Panelik extends JFrame {
 		textField_5.setBounds(359, 174, 114, 23);
 		getContentPane().add(textField_5);
 		textField_5.setText(Integer.toString(slider_5.getValue()));
+		
+		slider_6 = new JSlider();
+		slider_6.setValue(elementSterujacy6.getactualna());
+		slider_6.setEnabled(elementSterujacy6.getStateSensor());
+		slider_6.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				if(slider_6.getValueIsAdjusting())
+				textField_6.setText(Integer.toString(slider_6.getValue()));
+			}
+		});
+		slider_6.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				int wartosc;
+				wartosc = slider_6.getValue();
+				if(checkBox_1.isSelected()){
+					textField_6.setText(Integer.toString(wartosc));
+					elementSterujacy6.update(checkBox_1.isSelected(),slider_6.getValue());}
+				else
+					;
+			
+			}
+		});
+		slider_6.setSnapToTicks(true);
+		slider_6.setPaintTicks(true);
+		slider_6.setPaintLabels(true);
+		slider_6.setMinorTickSpacing(1);
+		slider_6.setMinimum(-50);
+		slider_6.setBounds(12, 226, 200, 27);
+		getContentPane().add(slider_6);
+		
+		slider_7 = new JSlider();
+		slider_7.setValue(elementSterujacy7.getactualna());
+		slider_7.setEnabled(elementSterujacy7.getStateSensor());
+		slider_7.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				if(slider_7.getValueIsAdjusting())
+				textField_7.setText(Integer.toString(slider_7.getValue()));
+			}
+		});
+		slider_7.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				int wartosc;
+				wartosc = slider_7.getValue();
+				if(checkBox.isSelected()){
+					textField_7.setText(Integer.toString(wartosc));
+					elementSterujacy7.update(checkBox.isSelected(),slider_7.getValue());}
+				else
+					;
+			
+			}
+		});
+		slider_7.setSnapToTicks(true);
+		slider_7.setPaintTicks(true);
+		slider_7.setPaintLabels(true);
+		slider_7.setMinorTickSpacing(1);
+		slider_7.setMinimum(-50);
+		slider_7.setBounds(12, 261, 200, 27);
+		getContentPane().add(slider_7);
+		
+		checkBox = new JCheckBox(elementSterujacy7.getNazwaSensor());
+		checkBox.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				if(checkBox.isSelected()){
+					elementSterujacy7.updateStateSensor(true);
+					slider_7.setEnabled(true);
+					//textField.setText(Integer.toString(slider.getValue()));
+					}
+				else{
+					elementSterujacy7.updateStateSensor(false);
+					slider_7.setEnabled(false);
+					textField_7.setText("OFF");}
+			}
+		});
+		checkBox.setSelected(elementSterujacy7.getStateSensor());
+		checkBox.setBounds(220, 253, 129, 23);
+		getContentPane().add(checkBox);
+		
+		checkBox_1 = new JCheckBox(elementSterujacy6.getNazwaSensor());
+		checkBox_1.setEnabled(elementSterujacy6.getStateSensor());
+		checkBox.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				if(checkBox_1.isSelected()){
+					elementSterujacy6.updateStateSensor(true);
+					slider_6.setEnabled(true);
+					//textField.setText(Integer.toString(slider.getValue()));
+					}
+				else{
+					elementSterujacy6.updateStateSensor(false);
+					slider_6.setEnabled(false);
+					textField_6.setText("OFF");}
+			}
+		});
+		checkBox_1.setBounds(220, 222, 129, 23);
+		getContentPane().add(checkBox_1);
+		
+		textField_6 = new JTextField();
+		textField_6.setText(Integer.toString(slider_6.getValue()));
+		textField_6.setEditable(false);
+		textField_6.setColumns(10);
+		textField_6.setBounds(359, 212, 114, 23);
+		getContentPane().add(textField_6);
+
+		
+		textField_7 = new JTextField();
+		textField_7.setText(Integer.toString(slider_7.getValue()));
+		textField_7.setEditable(false);
+		textField_7.setColumns(10);
+		textField_7.setBounds(359, 247, 114, 23);
+		getContentPane().add(textField_7);
+
+		
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{getContentPane(), slider, slider_1, slider_2, slider_3, slider_4, slider_5, chckbxCzujnik_5, chckbxCzujnik_1, chckbxCzujnik_4, chckbxCzujnik_3, chckbxCzujnik_2, chckbxCzujnik, textField, textField_1, textField_2, textField_3, textField_4, textField_5}));
 	}
 }
