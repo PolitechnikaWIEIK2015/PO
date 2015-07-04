@@ -575,16 +575,22 @@ public static boolean deleteAlarmy(int zrudlo)
  * @param data po wywoalniu funkcji przybierze wartosc daty alarmu
  * 
  */
-public static boolean getAlarmyData(int id, String data)
+public static boolean getAlarmyData(int id, Alarm data)
 {
 	boolean alarm = false;
 	
 	try {
 		
-		prep = con.prepareStatement("SELECT DATE(`data_alarmu`) FROM `alarmy` WHERE `alarmy`.`id` = "+ id +"");
+		prep = con.prepareStatement("SELECT `id`, `date`,`element`,`powod` FROM `alarmy` WHERE `alarmy`.`id` = "+ id +"");
 		res = prep.executeQuery();
-		data = String.valueOf(res);
+		if(res.next())
+		{							//TODO: 	WAS ADDED NO TEST
+		data.setId(res.getInt("id")); 
+		data.setData(res.getString("date"));
+		data.setZrudlo(res.getString("element")); 
+		data.setPowod(res.getInt("powod")); 
 
+		}
 		
 		
 	} catch (SQLException e) 
@@ -596,6 +602,103 @@ public static boolean getAlarmyData(int id, String data)
 	return(alarm);	
 }
 
+/*
+ * @param id id alarmu z ktorego ma zostac pobrana data
+ * @param data po wywoalniu funkcji przybierze wartosc daty alarmu
+ * 
+ */
+public static boolean getZdarzenie(int id, Zdarzenia data)
+{
+	boolean alarm = false;
+	
+	try {
+		
+		prep = con.prepareStatement("SELECT `id`, `date`,`element`,`powod` ,`stan` FROM `zdarzenia` WHERE `zdarzenia`.`id` = "+ id +"");
+		res = prep.executeQuery();
+		if(res.next())
+		{							//TODO: 	WAS ADDED NO TEST
+		data.setId(res.getInt("id")); 
+		data.setDate(res.getString("date"));
+		data.setZrudlo(res.getString("element")); 
+		data.setPowod(res.getInt("powod")); 
+		data.setStan(res.getInt("stan"));
+
+		}
+		
+		
+	} catch (SQLException e) 
+	{
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	return(alarm);	
+}
+
+/*
+ * @param id id alarmu z ktorego ma zostac pobrana data
+ * @param data po wywoalniu funkcji przybierze wartosc daty alarmu
+ * 
+ */
+public static boolean getnewEvent(Zdarzenia data)
+{
+	boolean alarm = false;
+	
+	try {
+		
+		prep = con.prepareStatement("SELECT `id`, `date`,`element`,`powod`,`stan` FROM `zdarzenia` WHERE `zdarzenia`.`id` IN ( SELECT MAX(id) FROM `zdarzenia`) ");
+		res = prep.executeQuery();
+		if(res.next())
+		{							//TODO: 	WAS ADDED NO TEST
+		data.setId(res.getInt("id")); 
+		data.setDate(res.getString("date"));
+		data.setZrudlo(res.getString("element")); 
+		data.setPowod(res.getInt("powod")); 
+		data.setStan(res.getInt("stan")); 
+
+		}
+		
+		
+	} catch (SQLException e) 
+	{
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	return(alarm);	
+}
+
+/*
+ * @param id id alarmu z ktorego ma zostac pobrana data
+ * @param data po wywoalniu funkcji przybierze wartosc daty alarmu
+ * 
+ */
+public static boolean getnewAlarmy(Alarm data)
+{
+	boolean alarm = false;
+	
+	try {
+		
+		prep = con.prepareStatement("SELECT `id`, `date`,`element`,`powod` FROM `alarmy` WHERE `alarmy`.`id` IN ( SELECT MAX(id) FROM `alarmy`) ");
+		res = prep.executeQuery();
+		if(res.next())
+		{							//TODO: 	WAS ADDED NO TEST
+		data.setId(res.getInt("id")); 
+		data.setData(res.getString("date"));
+		data.setZrudlo(res.getString("element")); 
+		data.setPowod(res.getInt("powod")); 
+
+		}
+		
+		
+	} catch (SQLException e) 
+	{
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	return(alarm);	
+}
 
 
 /*

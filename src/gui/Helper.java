@@ -7,6 +7,7 @@ import java_sql.Alarm;
 import java_sql.Czujnik;
 import java_sql.Java_sql;
 import java_sql.Przekaznik;
+import java_sql.Zdarzenia;
 
 public class Helper {
 	public static final int ZMIANA = 6;
@@ -17,13 +18,24 @@ public class Helper {
 
 
 	public int Id;
-	public Alarm[] alert;
+	public Alarm alert;
+	public Zdarzenia event;
 public Czujnik sensor;
 public Przekaznik relay;
 
 	Helper(int Id){
 		this.Id = Id;
 		Java_sql.conection();
+		
+		event = new Zdarzenia();
+		if(Java_sql.getnewEvent(event))
+			;
+		
+		alert = new Alarm();
+		if(Java_sql.getnewAlarmy(alert))
+			;
+//			System.out.println("czujnik " + Id + "failed");
+//		System.out.println("czujnik " + sensor.getNazwa() );
 		
 		sensor = new Czujnik();
 		if(Java_sql.getCzujnik(Id, sensor))
@@ -76,7 +88,7 @@ public Przekaznik relay;
 	
 	private void makeZdarzenie(int zrodlo) {
 		Java_sql.conection();
-			Java_sql.setZdarzenie(sensor.getNazwa(), zrodlo , sensor.getStan());
+			Java_sql.setZdarzenie(sensor.getNazwa(), zrodlo , sensor.getZadana());
 	
 		Java_sql.close();
 		SimpleDateFormat simpleDateHere = new SimpleDateFormat(

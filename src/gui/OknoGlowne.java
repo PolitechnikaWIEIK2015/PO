@@ -1,5 +1,9 @@
 package gui;
 
+import java_sql.Alarm;
+import java_sql.Java_sql;
+import java_sql.Zdarzenia;
+
 import javax.swing.Timer;
 import javax.swing.table.TableModel;
 import javax.swing.event.TableModelEvent;
@@ -317,9 +321,10 @@ public class OknoGlowne extends javax.swing.JFrame implements ActionListener{
 	}
 	/*********Wyswietlanie logow***********/
 	public void actionPerformed(ActionEvent e) {
+		timer.stop();
 		if(e.getSource()==timer){
 
-			timer.stop();
+			
 			
 			element.update();
 			element1.update();
@@ -332,7 +337,7 @@ public class OknoGlowne extends javax.swing.JFrame implements ActionListener{
 			
 			aktualizuj_temp_aktualne();
 			aktualizuj_zc();
-			//imer.restart();
+			
 		}
 		if(e.getSource()==ComboBoxLogi){
 			javax.swing.JComboBox cb = (javax.swing.JComboBox)e.getSource();
@@ -340,7 +345,35 @@ public class OknoGlowne extends javax.swing.JFrame implements ActionListener{
 			System.out.println(pomieszczenie);
 			wyswietl_logi(pomieszczenie);	
 		}	
-		
+		timer.restart();
+	}
+	
+	private String textLog(int log){
+		String text;
+		switch(log){
+		case 1:
+			text = "ALARM_Za_Niska_Temp";
+			break;
+		case 2:
+			text = "ALARM_Za_Wysoka_Temp";
+			break;
+		case 3:
+			text = "ALARM_Brak_Elem._Sterujacego";
+			break;
+		case 4:
+			text = "Pomieszczenie_Nagrzane";
+			break;
+		case 5:
+			text = "Dogrzanie_Pomieszczenia";
+			break;
+		case 6:
+			text = "Zmiana Zadanej";
+			break;
+		default:
+			text = "SystemFAULT";
+				break;
+		}
+		return text;
 	}
 	
 	private void wyswietl_logi(String pomieszczenie)
@@ -364,11 +397,25 @@ public class OknoGlowne extends javax.swing.JFrame implements ActionListener{
 			w = 6;
 		else if(pomieszczenie.equals("Pomieszczenie Gospodarcze"))
 			w = 7;
+		Alarm printer = new Alarm();
+		Zdarzenia event = new Zdarzenia();
 		
 		for (int i = 0; i<25; i++)
 		{
-			//Pobieranie i wyswietlanie.
-			element.printer();
+			Java_sql.conection();
+			Java_sql.getAlarmyData((element.alert.getId()-i), printer);
+			Java_sql.getZdarzenie((element.event.getId()-i), event);
+			Java_sql.close();
+			
+			TabelaLogiTAktualne.setValueAt(event.getDate(), i, 0);
+			TabelaLogiTAktualne.setValueAt(textLog(event.getPowod()), i, 1);
+			TabelaLogiTAktualne.setValueAt(event.getStan(), i, 2);
+
+			
+			TabelaLogiAktualne.setValueAt(printer.getDate(), i, 0);
+			TabelaLogiAktualne.setValueAt(printer.getZrudlo(), i, 1);
+			TabelaLogiAktualne.setValueAt(textLog(printer.getPowod()), i, 2);
+
 			
 		}
 	}
