@@ -75,14 +75,14 @@ public Przekaznik relay;
 	makeZdarzenie(ZMIANA);
 	if (sensor.getStan() < sensor.getZadana()) {
 		if (relay.getStan() != ON) {
-			updateRelay(ON);
 			makeZdarzenie(TooCold);
 		}
+		updateRelay(ON);
 	}else{
 		if(relay.getStan() != OFF){
-			updateRelay(OFF);
 			makeZdarzenie(TooHot);
 		}
+		updateRelay(OFF);
 	}
 }
 	

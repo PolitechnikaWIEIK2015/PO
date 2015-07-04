@@ -55,7 +55,20 @@ public class OknoGlowne extends javax.swing.JFrame implements ActionListener{
         timer.setCoalesce(true);
         timer.setDelay(delay);
         timer.start();
+		Alarm printer = new Alarm();
+		
+		for (int i = 0; i<25; i++)
+		{
+			Java_sql.conection();
+			Java_sql.getAlarmyData((element.alert.getId()-i), printer);
+			Java_sql.close();
+			
+			TabelaLogiAktualne.setValueAt(printer.getDate(), i, 0);
+			TabelaLogiAktualne.setValueAt(printer.getZrudlo(), i, 1);
+			TabelaLogiAktualne.setValueAt(textLog(printer.getPowod()), i, 2);
 
+			
+		}
     }
     
     private void initComponents() {
@@ -185,9 +198,9 @@ public class OknoGlowne extends javax.swing.JFrame implements ActionListener{
         });
         ScrollPaneLogiAktualne.setViewportView(TabelaLogiTAktualne);
         ComboBoxLogi.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Brak", "Salon", "Kuchnia", "Sypialnia 1", "Sypialnia 2", "Sypialnia 3", "Lazienka", "Pomieszczenie Gospodarcze" }));
-        LabelTAktualne.setText("Temperatury aktualne");
-        LabelTZadane.setText("Temperatury zadane");
-        TabelaLogiAktualne.setModel(new javax.swing.table.DefaultTableModel(wTLTZ, new String [] {"Data", "Godzina", "Temperatura"})
+        LabelTAktualne.setText("Zdarzenia");
+        LabelTZadane.setText("ALARMY!!!");
+        TabelaLogiAktualne.setModel(new javax.swing.table.DefaultTableModel(wTLTZ, new String [] {"Data", "Element", "Przyczyna"})
             
         		{
 				Class[] types = new Class [] {
@@ -335,6 +348,8 @@ public class OknoGlowne extends javax.swing.JFrame implements ActionListener{
 			element6.update();
 			element7.update();
 			
+			wyswietl_logi((String)ComboBoxLogi.getSelectedItem());
+			
 			aktualizuj_temp_aktualne();
 			aktualizuj_zc();
 			
@@ -397,8 +412,17 @@ public class OknoGlowne extends javax.swing.JFrame implements ActionListener{
 			w = 6;
 		else if(pomieszczenie.equals("Pomieszczenie Gospodarcze"))
 			w = 7;
+		if(w >=0)
+			updateLogi();
+	}
+	private void updateLogi(){
 		Alarm printer = new Alarm();
 		Zdarzenia event = new Zdarzenia();
+		
+		Java_sql.conection();
+		Java_sql.getnewAlarmy(printer);
+		Java_sql.getnewEvent(event);
+		Java_sql.close();
 		
 		for (int i = 0; i<25; i++)
 		{
@@ -417,8 +441,9 @@ public class OknoGlowne extends javax.swing.JFrame implements ActionListener{
 			TabelaLogiAktualne.setValueAt(textLog(printer.getPowod()), i, 2);
 
 			
-		}
+		}	
 	}
+	
 }
 
 /*******listener dla tabeli wartosci***********/
